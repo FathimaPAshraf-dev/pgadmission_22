@@ -1,0 +1,22 @@
+# Laravel default
+vendor/
+node_modules/
+.env
+storage/
+bootstrap/cache/
+*.log
+.idea/
+.vscode/
+
+# =========================
+# Custom ignores
+# =========================
+
+storage/app/public/
+
+storage/app/public/Candidate-Certificates/
+storage/app/public/certificates/
+
+public/Candidate-Certificates/
+public/images/
+public/certificates/
