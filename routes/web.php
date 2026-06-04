@@ -247,4 +247,4 @@ Route::prefix('admin')->group(function () {
     Route::get('/register', 'Auth\AdminRegisterController@showRegistrationForm')->name('admin.register');
 
 });
-//***********************///admin auth*******************************
+//////////////////////
