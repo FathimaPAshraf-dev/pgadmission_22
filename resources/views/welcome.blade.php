@@ -180,7 +180,7 @@ P.G. DIPLOMA PROGRAMMES 2026 - 27 </b><br>
                             </div> 
               </div>
             
-            </div><!-- /.card -->
+            </div>
           </div>
           <!-- /.col-md-6 -->
           <div class="col-lg-1"></div>
@@ -191,44 +191,55 @@ P.G. DIPLOMA PROGRAMMES 2026 - 27 </b><br>
            </div>
            <div class="card card-info card-outline"> 
                <div class="card-body">
-<!--                   <u><b> ADMISSION TO THE M.A. ,M.Sc, M.S.W, MFA ,MPES, DUAL MAIN MASTERS
-IN DISASTER MANAGEMENTAND P.G.DIPLOMA PROGRAMMES- 2024</b></u>-->
-                 <p>LAST DATE FOR ONLINE APPLICATION : 30.04.2026</p>
-      
-        <p>DOWNLOADING OF HALL TICKET :<b> To be announced later</b></p>
-                 <p>DATE OF ENTRANCE EXAMINATION : To be announced later </p>
-                 <p>PUBLICATION OF RANK LIST : 18.05.2026 </p>
-                 <!--<p>TRIAL ALLOTMENT : 17.05.2025</p>-->
-<!--                 <p>CENTRE OPTION EDIT LAST DATE : 19.05.2025</p>
-                 <p>FIRST ALLOTMENT : 23.05.2025</p>-->
-                 <p>ADMISSION : 21.05.2026 </p>
-                 <p>COMMENCEMENT OF CLASSES : 01.06.2026 </p>
+                 <p><strong>LAST DATE FOR ONLINE APPLICATION :</strong> 30.04.2026</p>
+
+<p><strong>DOWNLOADING OF HALL TICKET :</strong> 15-05-2026</p>
+
+<p style="margin-bottom: 0;">
+    <strong>DATE OF ENTRANCE EXAMINATION :</strong>
+</p>
+
+<p style="margin-left: 220px; margin-top: -20px; line-height: 1.8;">
+    25-05-2026<br>
+    26-05-2026<br>
+    29-05-2026<br>
+    30-05-2026
+</p>
+
+<p><strong>LAST DATE FOR UPLOADING MARKS :</strong> 03-06-2026</p>
+
+<p><strong>PUBLICATION OF RANK LIST :</strong> 10-06-2026</p>
+
+<p><strong>TRIAL ALLOTMENT :</strong> 16-06-2026</p>
+
+<p><strong>CENTRE OPTION EDIT LAST DATE :</strong> 14-06-2026 to 16-06-2026</p>
+
+<p><strong>FIRST ALLOTMENT :</strong> 19-06-2026</p>
+
+<p><strong>ADMISSION :</strong> 22-06-2026 to 23-06-2026</p>
+
+<p><strong>COMMENCEMENT OF CLASSES :</strong> 29-06-2026</p>
+<p class="text-center mt-3">
+
+    <a href="/storage/timetable2026.pdf"
+       target="_blank"
+       style="font-size: 15px; font-weight: 600; text-decoration: none;">
+
+        <i class="fa fa-download text-primary"></i>
+        Download Entrance Exam Time Table
+
+    </a>
+
+</p>
                  
-                 
-                 
-                   <br>
-              <!--<u><b> Admission to the P.G. Diploma in Manuscriptology </b></u>-->
-                 <!--<p>Last date of submission of application through online : 17.07.2023</p>-->
-                 <!--<p>Download of Hall Ticket : 11.07.2023</p>-->
-                 <!--<p>Tentative Schedule of Entrance Examinations : 20.07.2023 </p>-->
-                 <!--<p>Tentative Date of Publication of Rank list : 20.07.2023</p>-->
-                 <!--<p>Tentative dates for exercising option of Campus by the candidates: 20.07.2023- 22.07.2023</p>-->
-                 
-<!--                 <u><b> Admission to PG/PG Diploma Programmes under Project Mode Scheme 2023-24</b></u>
-                 <p>Last date of submission of application through online : 10.07.2023</p>
-                 <p>Download of Hall Ticket : 13.07.2023</p>
-                 <p>Tentative Schedule of Entrance Examinations : 15.07.2023 </p>
-                 <p>Date of Interview : 18.07.2023</p>
-                 <p>Date of publication of Result : 19.07.2023</p>
-                 <p>Date of Admission : 21.07.2023</p>
-                 <p>Date of commencement of classes : 24.07.2023</p>-->
-               </div>
+  <br>
+ </div>
             </div>
           </div>
-          <!-- /.col-md-6 -->
+        
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+     
+      </div>
     </div>
 
 <div class="modal fade" id="tallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -269,7 +280,6 @@ IN DISASTER MANAGEMENTAND P.G.DIPLOMA PROGRAMMES- 2024</b></u>-->
                                 <li style="font-size: 17px">Maximum size of photograph is 50kb and minimum size is 20kb / ഫോട്ടോയുടെ പരമാവധി വലുപ്പം 50kb ഉം കുറഞ്ഞ വലുപ്പം 20kb ഉം ആണ്</li>
                                 <li style="font-size: 17px">Maximum size of signature is 30kb and minimum size is 10kb / ഒപ്പിന്റെ പരമാവധി വലുപ്പം 30kb ഉം കുറഞ്ഞ വലുപ്പം 10kb ഉം ആണ്</li>
                                 <li style="font-size: 17px">Application are considered valid only after the successful payment of the fee in Part two of the application / അപേക്ഷയുടെ രണ്ടാം ഭാഗത്തിൽ ഫീസ് അടച്ചതിന് ശേഷം മാത്രമേ അപേക്ഷ സാധുവായി കണക്കാക്കൂ </li>
-            <!--                    <li>Application fee Rs:150 required for doing online payment.</li>-->
                                 <li style="font-size: 17px">For any issues related to online registration please write to us <b>helpdesk@ssus.ac.in</b> / ഓൺലൈൻ രജിസ്ട്രേഷനുമായി ബന്ധപ്പെട്ട എന്തെങ്കിലും പ്രശ്നങ്ങൾക്ക് helpdesk@ssus.ac.in എന്ന വിലാസത്തിൽ എഴുതുക</li>
                                 
                             </ul>
@@ -284,4 +294,3 @@ IN DISASTER MANAGEMENTAND P.G.DIPLOMA PROGRAMMES- 2024</b></u>-->
                   </div>
                 </div>   
 @endsection
-

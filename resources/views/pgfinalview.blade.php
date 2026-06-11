@@ -743,18 +743,7 @@
       
       
        @if($allotstat==10)
-<!--    <tr>
-      <th scope="row">Interview Memo</th>
-     
-     
-      <td> 
-                   <div class="col-sm-4" >
-                   <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
-                        Download  <i class="fa fa-download"></i></a>
-                        
-                   </div> 
-       </td>
-     </tr>    -->
+
 
     
 
@@ -799,7 +788,7 @@
                         Download <i class="fa fa-download"></i>
                     </a>
                 </div>
-                <div class="col-sm-6" hidden="">
+                <div class="col-sm-6">
                     <strong>Index Mark:</strong> {{ $mark }} <br/>
                     <strong>Rank:</strong> {{ $rankl }}
                 </div>
@@ -810,7 +799,7 @@
 
    
 <tr hidden="">
-      <th scope="row">Application Printout</th>
+      <th scope="row">Application Printou</th>
     
       <td><div class="col-sm-4">
                       <form action="{{route('getpdf')}}" method="get" name="pdffrom">
