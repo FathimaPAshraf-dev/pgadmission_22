@@ -799,7 +799,7 @@
                         Download <i class="fa fa-download"></i>
                     </a>
                 </div>
-                <div class="col-sm-6" hidden="">
+                <div class="col-sm-6">
                     <strong>Index Mark:</strong> {{ $mark }} <br/>
                     <strong>Rank:</strong> {{ $rankl }}
                 </div>
