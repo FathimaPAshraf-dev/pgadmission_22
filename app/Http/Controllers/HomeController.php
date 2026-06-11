@@ -3601,7 +3601,11 @@ $pubstatus=-1;
                                     ON tb_pgapp.pgapp_falseno = asw_pgfalseno.ent_exam_falseno
                                     WHERE tb_pgapp.pgapp_id = ?",[Auth::user()->pgapp_id]);
                                    // dd($index_mark );
+$rankDetails = DB::table('tbz_pgranklist')
+    ->where('rank_appid', Auth::user()->pgapp_id)
+    ->first();
 
+$finalIndexMark = $rankDetails->final_indexmark ?? null;
             if (!empty($index_mark) && isset($index_mark[0]->indexmark)) {
                 $mark = $index_mark[0]->indexmark;
             } else {
@@ -3877,7 +3881,7 @@ $data['Application Fee'] = (float) $amnt;
       return view('pgfinalview', compact('allotstatusres','allotstat',
              'pay_details','adsc_sl',
              'payment_success_count','datenow','admstat','feestat','admstat',
-             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt'))->with('feeDetails', $data);
+             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark'))->with('feeDetails', $data);
       
       
       

@@ -776,23 +776,72 @@
 
 
 
-     <tr hidden="">
-    <th scope="row">Hall Ticket</th>
+  <tr>
+    <th scope="row" style="vertical-align: middle; font-size:16px; font-weight:600;">
+        <i class="fa fa-trophy" style="color:#ffc107;"></i>
+        PG Entrance Rank Details
+    </th>
     <td>
-       
         @if($publish_status == 1)
-            <div class="row">
-                
-                <div class="col-sm-6">
-                    <a href="{{ route('hallticket2022') }}" target="_blank" class="btn btn-info btn-sm btn-flat">
-                        Download <i class="fa fa-download"></i>
-                    </a>
+
+            @if(!empty($rankl))
+
+                <div style="background:#f8f9fa; border:1px solid #e9ecef; border-radius:10px; padding:15px;">
+                    <div class="row">
+
+                        <!-- Index Mark -->
+                        <div class="col-md-6 mb-2">
+                            <div style="background:#ffffff; border-left:5px solid #007bff; border-radius:8px; padding:15px; box-shadow:0 2px 5px rgba(0,0,0,0.08); text-align:center;">
+                                <div style="font-size:13px; color:#6c757d; text-transform:uppercase; font-weight:600;">
+                                    <i class="fa fa-star" style="color:#ffc107;"></i>
+                                   Entrance Mark
+                                </div>
+                                <div style="font-size:28px; font-weight:700; color:#007bff; margin-top:5px;">
+                                    {{ $finalIndexMark }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rank -->
+                        <div class="col-md-6 mb-2">
+                            <div style="background:#ffffff; border-left:5px solid #28a745; border-radius:8px; padding:15px; box-shadow:0 2px 5px rgba(0,0,0,0.08); text-align:center;">
+                                <div style="font-size:13px; color:#6c757d; text-transform:uppercase; font-weight:600;">
+                                    <i class="fa fa-trophy" style="color:#28a745;"></i>
+                                    Rank
+                                </div>
+                                <div style="font-size:28px; font-weight:700; color:#28a745; margin-top:5px;">
+                                    {{ $rankl }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col-sm-6">
-                    <strong>Index Mark:</strong> {{ $mark }} <br/>
-                    <strong>Rank:</strong> {{ $rankl }}
+
+            @else
+
+                <div style="background:#fff3cd; border:1px solid #ffeeba; border-left:5px solid #ffc107; border-radius:10px; padding:15px;">
+                    <div style="font-size:16px; font-weight:600; color:#856404;">
+                        <i class="fa fa-info-circle"></i>
+                        Rank List Status
+                    </div>
+
+                    <div style="margin-top:8px; color:#856404;">
+                        You are <strong>not included in the published rank list.</strong>
+                    </div>
+                </div>
+
+            @endif
+
+        @else
+
+            <div style="background:#e2e3e5; border-left:5px solid #6c757d; border-radius:10px; padding:15px;">
+                <div style="font-size:16px; font-weight:600; color:#383d41;">
+                    <i class="fa fa-clock-o"></i>
+                    Rank List Not Published Yet
                 </div>
             </div>
+
         @endif
     </td>
 </tr>
