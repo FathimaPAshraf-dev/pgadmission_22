@@ -799,7 +799,7 @@
 
    
 <tr hidden="">
-      <th scope="row">Application Printout</th>
+      <th scope="row">Application Prin</th>
     
       <td><div class="col-sm-4">
                       <form action="{{route('getpdf')}}" method="get" name="pdffrom">
