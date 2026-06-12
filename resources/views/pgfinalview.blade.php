@@ -225,14 +225,13 @@
          @endif
          
           
-               
-         
+      
          
          
          
          
        
-         
+ 
         
          @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
         
@@ -245,51 +244,23 @@
                                <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
                                     Interview Memo <i class="fa fa-download"></i></a>
                                 </div> -->
-                                <!--<div class="card-body">-->
-        <tr>
-    <th scope="row">Trial Allotment Status</th>
-    <td>
-        <div class="col-sm-12">
-            <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+                             <!--<div class="card-body">-->
+      
+     <tr>
+       
 
-                @if(isset($allotstatusres) && count($allotstatusres) > 0)
-
-                    @foreach($allotstatusres as $allot)
-                        <p><strong>Program:</strong> {{ $allot->program_name }}</p>
-                        <p><strong>Centre:</strong> {{ $allot->centre }}</p>
-                        <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
-                        <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
-                        <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
-
-                        @if(!$loop->last)
-                            <hr>
-                        @endif
-                    @endforeach
-
-                @else
-
-                    <p class="text-danger mb-0">
-                        <strong>No Trial Allotment Available</strong>
-                    </p>
-
-                @endif
-
-            </div>
-        </div>
-    </td>
-</tr>
                                 
                             @if( $admstat==0 )
                               <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                             </div>
                              <div class="card-header ">
-                               <h6 ><font style="color: red"> Admission request is not initiated. </font></h6>
+                               <!-- <h6 ><font style="color: red"> Admission request is not initiated. </font></h6> -->
 <!--                               Please contact the corresponding department / centre for admission-->
                             </div>
                            @elseif($admstat==1 ) 
                              <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                            </div>
                            
                            <!--fee date extension-->
@@ -755,7 +726,34 @@
     
   </thead>
   <tbody>
-      
+      <tr>
+    <th scope="row">
+        <i class="fa fa-trophy text-warning"></i>
+        PG Entrance Rank Details
+    </th>
+    <td>
+        @if(!empty($rankl))
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <p class="mb-2">
+                        <strong>Entrance Rank :</strong>
+                        <span class="badge badge-success">{{ $rankl }}</span>
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Entrance Mark:</strong>
+                        <span class="badge badge-info">{{ $finalIndexMark }}</span>
+                    </p>
+                </div>
+            </div>
+        @else
+            <div class="alert alert-warning mb-0">
+                You are not included in the rank list.
+            </div>
+        @endif
+    </td>
+</tr>
+
       
        @if($feestat==1)
     <tr>
@@ -787,25 +785,39 @@
        </td>
      </tr>    -->
 
-    
+   @if(Auth::user()->pgapp_adsc_sl != '1182')
+    <th scope="row">Trial Allotment Status</th>
+    <td>
+        <div class="col-sm-12">
+            <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
 
-     <tr>
-  <th scope="row">Trial Allotment Status</th>
-  <td>
-    <div class="col-sm-12">
-      <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
-      @foreach($allotstatusres as $allotstatusres)
-        <p><strong>Program:</strong> {{ $allotstatusres->program_name }}</p>
-        <p><strong>Centre:</strong> {{ $allotstatusres->centre }}</p>
-        <p><strong>Community:</strong> {{ $allotstatusres->app_cat }}</p>
-        <p><strong>Allotted Category:</strong> {{ $allotstatusres->seat }}</p>
-        <p><strong>Allotment Type:</strong> {{ $allotstatusres->app_allotment }}</p>
-        @endforeach
-      </div>
-    </div>
-  </td>
+                @if(isset($allotstatusres) && count($allotstatusres) > 0)
+
+                    @foreach($allotstatusres as $allot)
+                        <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                        <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                        <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                        <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                        <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+                        @if(!$loop->last)
+                            <hr>
+                        @endif
+                    @endforeach
+
+                @else
+
+                    <p class="text-danger mb-0">
+                        <strong>No Trial Allotment Available</strong>
+                    </p>
+
+                @endif
+
+            </div>
+        </div>
+    </td>
+@endif
 </tr>
-
 @elseif($allotstat==0)
                             
   <div class="card-header " align="center" hidden="">
@@ -814,7 +826,6 @@
  
 
      @endif
-
 
 
 <!-- 
@@ -838,7 +849,17 @@
     </td>
 </tr> -->
 
-   
+            
+         <!-- <tr>
+    <th>Entrance Rank</th>
+    <td>
+       
+            Rank: {{ $rankl }}<br>
+            Final Index Mark: {{ $finalIndexMark }}
+       
+      
+    </td>
+</tr> -->
 <tr hidden="">
       <th scope="row">Application Printout</th>
     
@@ -849,18 +870,35 @@
                     </form>
                     </div></td>
     </tr>
-    <tr >
-      <th scope="row" hidden>Option Printout</th>
-     
-     
-      <td> @if(Auth::user()->option_stat==1 || Auth::user()->option_stat==2 || Auth::user()->option_stat==3)
-                   <div class="col-sm-4" hidden >
-                   <a href="{{route('printoption')}}" target="_blank" class="btn btn-flat btn-sm btn-success">
-                        Download  <i class="fa fa-download"></i></a>
-                        
-                   </div> 
-                 @endif</td>
-     </tr>
+    <tr>
+    <th scope="row">
+        <i class="fa fa-file-pdf-o text-info"></i> Option Printout
+    </th>
+
+    <td>
+        @if(in_array(Auth::user()->option_stat, [1,2,3]))
+
+            <span style="color:#6c757d; margin-right:10px;">
+                Download your submitted options
+            </span>
+
+            <a href="{{ route('printoption') }}"
+               target="_blank"
+               style="
+                    background:#17a2b8;
+                    color:#fff;
+                    padding:6px 12px;
+                    border-radius:4px;
+                    text-decoration:none;
+                    font-size:13px;
+                    font-weight:500;
+               ">
+                <i class="fa fa-download"></i> Download
+            </a>
+
+        @endif
+    </td>
+</tr>
      
      
      
@@ -868,12 +906,12 @@
 
 
 
-
+@if(Auth::user()->pgapp_adsc_sl != '1182')
                            
                             <div class="container mt-4" >
 
         <!-- Button to toggle table visibility -->
-        <button class="btn btn-info mb-3" id="toggleTableBtn"> Trail Allotment Rank Details (For Reference)</button>
+        <button class="btn btn-info mb-3" id="toggleTableBtn"> Trail Allotment - Last  Rank Details (For Reference)</button>
 
         <div id="tableContainer" style="display: none;">
             <!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
@@ -916,7 +954,7 @@
             </table>
         </div>
     </div>
-
+@endif
     <style>
         #toggleTableBtn {
             font-size: 16px;
@@ -1036,32 +1074,132 @@
          </div> 
          </div>
     </div>
-                         
-                         
-  @if($result == 1)
-<div class="option-edit-card" hidden>
+       @if(Auth::user()->pgapp_adsc_sl != '1182')                  
+   @if($result == 1)
 
-    <div class="option-content">
-        <div class="option-icon">
-            <i class="fa fa-sliders"></i>
-        </div>
+<div style="background:#fff8e6;border:1px solid #ffd591;border-left:6px solid #fa8c16;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
-        <div class="option-text">
-            <h5>Need to update your options?</h5>
-            <p>
-                You can rearrange or modify your preferred centre options before the allotment process closes.
-            </p>
-        </div>
-
-        <div class="option-action">
-            <a href="{{ route('reoptionindex') }}" class="modern-edit-btn">
-                <i class="fa fa-pen"></i> Edit Options
-            </a>
+    <div style="display:flex;align-items:center;margin-bottom:15px;">
+        <div style="font-size:30px;margin-right:12px;">⚠️</div>
+        <div>
+            <h4 style="margin:0;color:#d46b08;font-weight:700;">
+                Trial Allotment Notice
+            </h4>
+            <small style="color:#666;">
+                Please read the following information carefully.
+            </small>
         </div>
     </div>
 
+    <div style="background:#ffffff;border-radius:8px;padding:15px;margin-bottom:12px;border:1px solid #f0f0f0;">
+
+       
+
+        <p style="margin-bottom:10px;line-height:1.8;color:#333;">
+            <strong style="color:#cf1322;">
+                ട്രയൽ അലോട്ട്മെന്റ് പ്രവേശനത്തിനുള്ള അന്തിമ അലോട്ട്മെന്റ് അല്ല.
+            </strong>
+            അപേക്ഷയിൽ നൽകിയിരിക്കുന്ന ഓപ്ഷനുകൾ, റാങ്ക്, സംവരണ മാനദണ്ഡങ്ങൾ എന്നിവയുടെ അടിസ്ഥാനത്തിൽ തയ്യാറാക്കിയ പ്രാഥമിക അലോട്ട്മെന്റാണിത്.
+        </p>
+
+        <p style="margin-bottom:0;line-height:1.8;color:#333;">
+            ട്രയൽ അലോട്ട്മെന്റിന്റെ അടിസ്ഥാനത്തിൽ വിദ്യാർത്ഥികൾക്ക് അവരുടെ ഓപ്ഷനുകൾ
+            പുനഃക്രമീകരിക്കാനോ, പുതിയ ഓപ്ഷനുകൾ ചേർക്കാനോ, നിലവിലുള്ള ഓപ്ഷനുകൾ ഒഴിവാക്കാനോ അവസരമുണ്ട്.
+            ഓപ്ഷൻ ക്രമീകരണത്തിനായി നിശ്ചയിച്ചിരിക്കുന്ന സമയപരിധി പാലിക്കേണ്ടതാണ്.
+        </p>
+
+    </div>
+
+    <div style="background:#ffffff;border-radius:8px;padding:15px;border:1px solid #f0f0f0;">
+
+        
+
+        <p style="margin-bottom:10px;line-height:1.8;color:#333;">
+            <strong style="color:#cf1322;">
+                Trial Allotment is NOT the final allotment for admission.
+            </strong>
+            It is a preliminary allotment prepared based on the options submitted in the application,
+            entrance rank, and reservation criteria.
+        </p>
+
+        <p style="margin-bottom:10px;line-height:1.8;color:#333;">
+            Based on the trial allotment, candidates may:
+        </p>
+
+        <ul style="margin-left:20px;color:#333;line-height:1.8;">
+            <li>Rearrange existing options.</li>
+            <li>Add new options.</li>
+            <li>Remove unwanted options.</li>
+            <li>Review preferences before final allotment.</li>
+        </ul>
+
+        <p style="margin-bottom:0;line-height:1.8;color:#333;">
+            <strong>
+                Candidates must complete option modification within the prescribed time limit.
+            </strong>
+        </p>
+
+    </div>
+
 </div>
-@endif       
+
+<div style="
+    background:#f8fcfd;
+    border:1px solid #d1ecf1;
+    border-left:4px solid #17a2b8;
+    border-radius:8px;
+    padding:15px 20px;
+    margin:15px 0;
+">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-wrap:wrap;
+        gap:15px;
+    ">
+
+        <div>
+            <h5 style="
+                margin:0 0 5px 0;
+                color:#17a2b8;
+                font-weight:600;
+            ">
+                <i class="fa fa-sliders"></i>
+                Update Your Options
+            </h5>
+
+            <p style="
+                margin:0;
+                color:#6c757d;
+                font-size:14px;
+                line-height:1.5;
+            ">
+                You can rearrange, add, or remove your preferred centre options before the allotment process closes.
+            </p>
+        </div>
+
+        <a href="{{ route('reoptionindex') }}"
+           style="
+                background:#17a2b8;
+                color:#fff;
+                text-decoration:none;
+                padding:8px 18px;
+                border-radius:5px;
+                font-size:14px;
+                font-weight:600;
+                white-space:nowrap;
+           ">
+            <i class="fa fa-pen"></i> Edit Options
+        </a>
+
+    </div>
+
+</div>
+
+@endif
+@endif
                          
     
    <div class="col-sm-2" hidden="true">

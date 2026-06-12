@@ -776,7 +776,7 @@ $data['Application Fee'] = (float) $amnt;
             WHERE 
               tb_admncentre.adcen_adsc_sl = tb_admnscheme.adsc_sl AND
               tb_admnscheme.adsc_pgm_sl = tb_program.pgm_sl AND
-              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2025'",[$adscsl]);
+              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2026'",[$adscsl]);
 
       /// dd($centre_options);
              $count_centr=count($centre_options);
@@ -3422,7 +3422,8 @@ if(count($option)==0)
 //         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,special_reserv_flag from admn22.seat_allocation_matrix where app_id=? and app_id not in
 //                (SELECT admn22.intra_cent_allot_change.app_id FROM admn22.intra_cent_allot_change )",[$id]);
          
-         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix where app_id=?",[$id]);
+         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix_not_published
+ where app_id=?",[$id]);
          
           //dd($allotstatusres);
        $special_reserv_flag=0;
@@ -3637,7 +3638,7 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
                        // dd($result);
 
 
-            $seatAllocations = DB::table('admn22.seat_allocation_matrix')
+            $seatAllocations = DB::table('admn22.seat_allocation_matrix_not_published')
             ->select(
                 'app_allotment',
                 'pgm',
@@ -3658,7 +3659,7 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
             ->groupBy('app_allotment', 'pgm', 'cent')
             ->get();
 
-           // dd($seatAllocations);
+        //    dd($seatAllocations);
         
 //        dd($allotstat);
 //      return view('pgfinalview', compact('allotstatusres','allotstat',
