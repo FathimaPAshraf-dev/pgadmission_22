@@ -173,11 +173,11 @@
         </table>
 
         <!-- Retry Button -->
-        <div class="text-center mt-3">
+        <!-- <div class="text-center mt-3">
             <button type="submit" id="retryBtn" class="btn btn-primary">
                 Retry Payment
             </button>
-        </div>
+        </div> -->
 
     </form>
 
@@ -231,22 +231,53 @@
          
          
          
-         
-         
+       
          
         
          @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
         
-        @if($allotstat==10000000 )
-                            <div class="card-header " >
+        @if($allotstat==0)
+                            <!-- <div class="card-header " >
                                <h5 class="card-title m-0 "><b>ALLOTMENT DETAILS</b></h5>
                            </div>
                              <div class="card-header ">
                                    <h4 class="card-title m-0 "><font style="color: green">Happy to inform that you are selected for PG Admission. Please download the Interview Memo</font></h4>
                                <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
                                     Interview Memo <i class="fa fa-download"></i></a>
-                                </div>
+                                </div> -->
                                 <!--<div class="card-body">-->
+        <tr>
+    <th scope="row">Trial Allotment Status</th>
+    <td>
+        <div class="col-sm-12">
+            <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+
+                @if(isset($allotstatusres) && count($allotstatusres) > 0)
+
+                    @foreach($allotstatusres as $allot)
+                        <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                        <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                        <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                        <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                        <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+                        @if(!$loop->last)
+                            <hr>
+                        @endif
+                    @endforeach
+
+                @else
+
+                    <p class="text-danger mb-0">
+                        <strong>No Trial Allotment Available</strong>
+                    </p>
+
+                @endif
+
+            </div>
+        </div>
+    </td>
+</tr>
                                 
                             @if( $admstat==0 )
                               <div class="card-header ">
@@ -743,7 +774,18 @@
       
       
        @if($allotstat==10)
-
+<!--    <tr>
+      <th scope="row">Interview Memo</th>
+     
+     
+      <td> 
+                   <div class="col-sm-4" >
+                   <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
+                        Download  <i class="fa fa-download"></i></a>
+                        
+                   </div> 
+       </td>
+     </tr>    -->
 
     
 
@@ -775,80 +817,30 @@
 
 
 
-
-  <tr>
-    <th scope="row" style="vertical-align: middle; font-size:16px; font-weight:600;">
-        <i class="fa fa-trophy" style="color:#ffc107;"></i>
-        PG Entrance Rank Details
-    </th>
+<!-- 
+     <tr>
+    <th scope="row">Hall Ticket</th>
     <td>
-        @if($publish_status == 1)
-
-            @if(!empty($rankl))
-
-                <div style="background:#f8f9fa; border:1px solid #e9ecef; border-radius:10px; padding:15px;">
-                    <div class="row">
-
-                        <!-- Index Mark -->
-                        <div class="col-md-6 mb-2">
-                            <div style="background:#ffffff; border-left:5px solid #007bff; border-radius:8px; padding:15px; box-shadow:0 2px 5px rgba(0,0,0,0.08); text-align:center;">
-                                <div style="font-size:13px; color:#6c757d; text-transform:uppercase; font-weight:600;">
-                                    <i class="fa fa-star" style="color:#ffc107;"></i>
-                                   Entrance Mark
-                                </div>
-                                <div style="font-size:28px; font-weight:700; color:#007bff; margin-top:5px;">
-                                    {{ $finalIndexMark }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Rank -->
-                        <div class="col-md-6 mb-2">
-                            <div style="background:#ffffff; border-left:5px solid #28a745; border-radius:8px; padding:15px; box-shadow:0 2px 5px rgba(0,0,0,0.08); text-align:center;">
-                                <div style="font-size:13px; color:#6c757d; text-transform:uppercase; font-weight:600;">
-                                    <i class="fa fa-trophy" style="color:#28a745;"></i>
-                                    Rank
-                                </div>
-                                <div style="font-size:28px; font-weight:700; color:#28a745; margin-top:5px;">
-                                    {{ $rankl }}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+        @if(Auth::user()->ent_hallticket_stat == 1 && $publish_status == 1)
+            <div class="row">
+                
+                <div class="col-sm-6">
+                    <a href="{{ route('hallticket2022') }}" target="_blank" class="btn btn-info btn-sm btn-flat">
+                        Download <i class="fa fa-download"></i>
+                    </a>
                 </div>
-
-            @else
-
-                <div style="background:#fff3cd; border:1px solid #ffeeba; border-left:5px solid #ffc107; border-radius:10px; padding:15px;">
-                    <div style="font-size:16px; font-weight:600; color:#856404;">
-                        <i class="fa fa-info-circle"></i>
-                        Rank List Status
-                    </div>
-
-                    <div style="margin-top:8px; color:#856404;">
-                        You are <strong>not included in the published rank list.</strong>
-                    </div>
-                </div>
-
-            @endif
-
-        @else
-
-            <div style="background:#e2e3e5; border-left:5px solid #6c757d; border-radius:10px; padding:15px;">
-                <div style="font-size:16px; font-weight:600; color:#383d41;">
-                    <i class="fa fa-clock-o"></i>
-                    Rank List Not Published Yet
+                <div class="col-sm-6" hidden="">
+                    <strong>Index Mark:</strong> {{ $mark }} <br/>
+                    <strong>Rank:</strong> {{ $rankl }}
                 </div>
             </div>
-
         @endif
     </td>
-</tr>
+</tr> -->
 
    
 <tr hidden="">
-      <th scope="row">Application Prin</th>
+      <th scope="row">Application Printout</th>
     
       <td><div class="col-sm-4">
                       <form action="{{route('getpdf')}}" method="get" name="pdffrom">
@@ -857,12 +849,12 @@
                     </form>
                     </div></td>
     </tr>
-    <tr hidden="">
-      <th scope="row">Option Printout</th>
+    <tr >
+      <th scope="row" hidden>Option Printout</th>
      
      
       <td> @if(Auth::user()->option_stat==1 || Auth::user()->option_stat==2 || Auth::user()->option_stat==3)
-                   <div class="col-sm-4" >
+                   <div class="col-sm-4" hidden >
                    <a href="{{route('printoption')}}" target="_blank" class="btn btn-flat btn-sm btn-success">
                         Download  <i class="fa fa-download"></i></a>
                         
@@ -878,14 +870,14 @@
 
 
                            
-                            <div class="container mt-4" hidden="">
+                            <div class="container mt-4" >
 
         <!-- Button to toggle table visibility -->
-        <button class="btn btn-info mb-3" id="toggleTableBtn">Show Allotment Details(For reference)</button>
+        <button class="btn btn-info mb-3" id="toggleTableBtn"> Trail Allotment Rank Details (For Reference)</button>
 
         <div id="tableContainer" style="display: none;">
             <!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
-            <h4 class="mb-4">First Allotment: Last rank details</h4>
+            <h4 class="mb-4">Trail Allotment: Last rank details</h4>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -933,6 +925,92 @@
             text-align: center;
         }
     </style>
+    <style>
+ .option-edit-card{
+    background: linear-gradient(135deg, #f8fbff, #eef4ff);
+    border: 1px solid #dbe7ff;
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.option-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.option-icon{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#17a2b8;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.option-text{
+    flex:1;
+    min-width:250px;
+}
+
+.option-text h5{
+    margin-bottom:6px;
+    font-weight:700;
+    color:#1d3557;
+}
+
+.option-text p{
+    margin:0;
+    color:#5c677d;
+    font-size:15px;
+    line-height:1.6;
+}
+
+.modern-edit-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#17a2b8;
+    color:#fff !important;
+    padding:12px 24px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s ease;
+    box-shadow:0 4px 10px rgba(45,108,223,0.25);
+}
+
+.modern-edit-btn:hover{
+    background:#17a2b8;
+    transform:translateY(-2px);
+    color:#fff !important;
+    text-decoration:none;
+}
+
+@media(max-width:768px){
+
+    .option-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .option-action{
+        width:100%;
+    }
+
+    .modern-edit-btn{
+        width:100%;
+        justify-content:center;
+    }
+}
+</style>
 
     <script>
         document.getElementById('toggleTableBtn').addEventListener('click', function() {
@@ -945,13 +1023,7 @@
 
 
 
-      @if($result == 1234)
-          <a href="{{ route('reoptionindex') }}" class="btn btn-primary">
-              Edit Option
-          </a>
-      @else
-          <!--<p>edit option closed.</p>-->
-      @endif
+  
 
 
 
@@ -966,7 +1038,30 @@
     </div>
                          
                          
-                         
+  @if($result == 1)
+<div class="option-edit-card" hidden>
+
+    <div class="option-content">
+        <div class="option-icon">
+            <i class="fa fa-sliders"></i>
+        </div>
+
+        <div class="option-text">
+            <h5>Need to update your options?</h5>
+            <p>
+                You can rearrange or modify your preferred centre options before the allotment process closes.
+            </p>
+        </div>
+
+        <div class="option-action">
+            <a href="{{ route('reoptionindex') }}" class="modern-edit-btn">
+                <i class="fa fa-pen"></i> Edit Options
+            </a>
+        </div>
+    </div>
+
+</div>
+@endif       
                          
     
    <div class="col-sm-2" hidden="true">
