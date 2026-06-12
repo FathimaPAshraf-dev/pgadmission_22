@@ -237,7 +237,7 @@ class HomeController extends Controller
    $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+      date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
 //        dd($datenow);
 //       if($datenow>'27/04/2022'){
@@ -520,7 +520,7 @@ $category=DB::select("select category_sl,category_name from tb_category  ");
         $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+        date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
 
 
@@ -963,7 +963,7 @@ $category=DB::select("select category_sl,category_name from tb_category  ");
         $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+      date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
 
 
@@ -1399,7 +1399,7 @@ $category=DB::select("select category_sl,category_name from tb_category  ");
         $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+       date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
         
         
@@ -3315,7 +3315,7 @@ if(count($option)==0)
       $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
-            date_default_timezone_set("Asia/Calcutta");
+           date_default_timezone_set('Asia/Kolkata');
             $timenow= date("H:i:s");
 //     dd($curnt_date);
     if(empty($option)){
@@ -3333,7 +3333,7 @@ if(count($option)==0)
     public function postpg_pdf(Request $request){
         
         $appid=Auth::user()->pgapp_id;
-        date_default_timezone_set("Asia/Calcutta");
+   date_default_timezone_set('Asia/Kolkata');
         $time= date("H:i:s");  
         $pgapp=DB::table('tb_pgapp')->select('*')->where('pgquali_pgapp_id','=',$appid)->get();
 
@@ -3422,9 +3422,10 @@ if(count($option)==0)
 //         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,special_reserv_flag from admn22.seat_allocation_matrix where app_id=? and app_id not in
 //                (SELECT admn22.intra_cent_allot_change.app_id FROM admn22.intra_cent_allot_change )",[$id]);
          
-         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix where app_id=?",[$id]);
+         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix_not_published
+ where app_id=?",[$id]);
          
-          //dd($allotstatusres);
+        //   dd($allotstatusres);
        $special_reserv_flag=0;
          $allotstat=0;
          $payf=0;
@@ -3584,7 +3585,7 @@ $pubstatus=-1;
       $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+      date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
     
 //        if($datenow>'27/04/2022'){
@@ -3601,7 +3602,11 @@ $pubstatus=-1;
                                     ON tb_pgapp.pgapp_falseno = asw_pgfalseno.ent_exam_falseno
                                     WHERE tb_pgapp.pgapp_id = ?",[Auth::user()->pgapp_id]);
                                    // dd($index_mark );
+$rankDetails = DB::table('tbz_pgranklist')
+    ->where('rank_appid', Auth::user()->pgapp_id)
+    ->first();
 
+$finalIndexMark = $rankDetails->final_indexmark ?? null;
             if (!empty($index_mark) && isset($index_mark[0]->indexmark)) {
                 $mark = $index_mark[0]->indexmark;
             } else {
@@ -3877,7 +3882,7 @@ $data['Application Fee'] = (float) $amnt;
       return view('pgfinalview', compact('allotstatusres','allotstat',
              'pay_details','adsc_sl',
              'payment_success_count','datenow','admstat','feestat','admstat',
-             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt'))->with('feeDetails', $data);
+             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark'))->with('feeDetails', $data);
       
       
       
@@ -4029,7 +4034,7 @@ $data['Application Fee'] = (float) $amnt;
       $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+     date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
     
 //        if($datenow>'27/04/2022'){
@@ -4538,7 +4543,7 @@ $data['Application Fee'] = (float) $amnt;
             
         $dt_now = Carbon::now();
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+       date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y h:m:s");
         $transactionDate = str_replace(" ", "%20", $datenow);
         
@@ -4876,7 +4881,7 @@ $data['Application Fee'] = (float) $amnt;
             
         $dt_now = Carbon::now();
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+       date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y h:m:s");
         $transactionDate = str_replace(" ", "%20", $datenow);
         
@@ -5246,7 +5251,7 @@ if($transactionResponse->validateResponse($_POST)){
            
         $dt_now = Carbon::now();
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+      date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y h:m:s");
         $transactionDate = str_replace(" ", "%20", $datenow);
         
@@ -5346,7 +5351,7 @@ if($transactionResponse->validateResponse($_POST)){
             $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
-            date_default_timezone_set("Asia/Calcutta");
+        date_default_timezone_set('Asia/Kolkata');
             $time= date("H:i:s");
             $pgapp = DB::table('tb_pgapp')
             ->select('tb_pgapp.*', 'tb_admnscheme.adsc_name', 'tb_gender.gender_name')
@@ -5489,7 +5494,7 @@ if($transactionResponse->validateResponse($_POST)){
       $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
-            date_default_timezone_set("Asia/Calcutta");
+          date_default_timezone_set('Asia/Kolkata');
             $timenow= date("H:i:s");
 //      if($adscl==1041 || $adscl==1054 || $adscl==1063 || $adscl==1064)   {
 //         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1054]); 
@@ -5539,7 +5544,7 @@ if($transactionResponse->validateResponse($_POST)){
       $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
-            date_default_timezone_set("Asia/Calcutta");
+          date_default_timezone_set('Asia/Kolkata');
             $timenow= date("H:i:s");
 
     if(empty($allotment)){
