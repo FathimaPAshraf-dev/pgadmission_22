@@ -228,7 +228,7 @@
       
          
          
-         
+      
          
        
  
@@ -293,7 +293,7 @@
                              @endif
                                 
                                 
-                                
+                              
                                 
 
                                 <!--</div>-->
@@ -726,8 +726,9 @@
     
   </thead>
   <tbody>
-      <tr>
-    <th scope="row">
+  
+      <tr hidden>
+    <th scope="row" >
         <i class="fa fa-trophy text-warning"></i>
         PG Entrance Rank Details
     </th>
@@ -771,61 +772,62 @@
      @endif
       
       
-       @if($allotstat==10)
-<!--    <tr>
-      <th scope="row">Interview Memo</th>
-     
-     
-      <td> 
-                   <div class="col-sm-4" >
-                   <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
-                        Download  <i class="fa fa-download"></i></a>
-                        
-                   </div> 
-       </td>
-     </tr>    -->
+      @if($allotstat == 10)
 
-   @if(Auth::user()->pgapp_adsc_sl != '1182')
+    @if(Auth::user()->pgapp_adsc_sl != '1182')
+        <tr>
+            <th scope="row">Trial Allotment Status</th>
+            <td>
+                <div class="col-sm-12">
+                    <div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
+
+                        @if(isset($allotstatusres[0]) && !empty($allotstatusres[0]->program_name))
+
+                            @foreach($allotstatusres as $allot)
+                                <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                                <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                                <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                                <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                                <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+                                @if(!$loop->last)
+                                    <hr>
+                                @endif
+                            @endforeach
+
+                        @else
+
+                            <div class="alert alert-warning mb-0">
+                                <strong>You are not included in the Rank List.</strong>
+                            </div>
+
+                        @endif
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    @endif
+
+@elseif($allotstat == 0)
+
+ <tr>
     <th scope="row">Trial Allotment Status</th>
     <td>
-        <div class="col-sm-12">
-            <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
-
-                @if(isset($allotstatusres) && count($allotstatusres) > 0)
-
-                    @foreach($allotstatusres as $allot)
-                        <p><strong>Program:</strong> {{ $allot->program_name }}</p>
-                        <p><strong>Centre:</strong> {{ $allot->centre }}</p>
-                        <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
-                        <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
-                        <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
-
-                        @if(!$loop->last)
-                            <hr>
-                        @endif
-                    @endforeach
-
-                @else
-
-                    <p class="text-danger mb-0">
-                        <strong>No Trial Allotment Available</strong>
-                    </p>
-
-                @endif
-
-            </div>
+        <div style="
+            padding: 15px 20px;
+            background-color: #fff8e1;
+            border-left: 4px solid #f02906;
+            border-radius: 5px;
+            color: #856404;
+        ">
+            You have not been allotted a seat in this round. Please wait for the upcoming allotments.
         </div>
     </td>
-@endif
 </tr>
-@elseif($allotstat==0)
-                            
-  <div class="card-header " align="center" hidden="">
-           <h5 class="card-title m-0 danger"><font style="color: red">You have not been allotted a seat in this round. Please wait for the upcoming allotments. Wishing you the best of luck!</font></h5>
-     </div>
- 
 
-     @endif
+
+@endif
 
 
 <!-- 
