@@ -812,6 +812,7 @@
 @elseif($allotstat == 0)
 
  <tr>
+    
     <th scope="row">Trial Allotment Status</th>
     <td>
         <div style="
