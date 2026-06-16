@@ -173,11 +173,11 @@
         </table>
 
         <!-- Retry Button -->
-        <div class="text-center mt-3">
+        <!-- <div class="text-center mt-3">
             <button type="submit" id="retryBtn" class="btn btn-primary">
                 Retry Payment
             </button>
-        </div>
+        </div> -->
 
     </form>
 
@@ -231,34 +231,67 @@
          
          
          
+       
          
-         
-         
+       
+ 
         
          @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
         
-        @if($allotstat==10000000 )
-                            <div class="card-header " >
+        @if($allotstat==0)
+                            <!-- <div class="card-header " >
                                <h5 class="card-title m-0 "><b>ALLOTMENT DETAILS</b></h5>
                            </div>
                              <div class="card-header ">
                                    <h4 class="card-title m-0 "><font style="color: green">Happy to inform that you are selected for PG Admission. Please download the Interview Memo</font></h4>
                                <a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
                                     Interview Memo <i class="fa fa-download"></i></a>
-                                </div>
+                                </div> -->
                                 <!--<div class="card-body">-->
+        <tr>
+    <th scope="row">Trial Allotment Status</th>
+    <td>
+        <div class="col-sm-12">
+            <div style="padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+
+                @if(isset($allotstatusres) && count($allotstatusres) > 0)
+
+                    @foreach($allotstatusres as $allot)
+                        <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                        <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                        <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                        <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                        <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+                        @if(!$loop->last)
+                            <hr>
+                        @endif
+                    @endforeach
+
+                @else
+
+                    <p class="text-danger mb-0">
+                        <strong>No Trial Allotment Available</strong>
+                    </p>
+
+                @endif
+
+            </div>
+        </div>
+    </td>
+</tr>
                                 
                             @if( $admstat==0 )
                               <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                             </div>
                              <div class="card-header ">
-                               <h6 ><font style="color: red"> Admission request is not initiated. </font></h6>
+                               <!-- <h6 ><font style="color: red"> Admission request is not initiated. </font></h6> -->
 <!--                               Please contact the corresponding department / centre for admission-->
                             </div>
                            @elseif($admstat==1 ) 
                              <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                            </div>
                            
                            <!--fee date extension-->
@@ -291,7 +324,7 @@
                              @endif
                                 
                                 
-                                
+                              
                                 
 
                                 <!--</div>-->
@@ -724,7 +757,35 @@
     
   </thead>
   <tbody>
-      
+  
+      <tr hidden>
+    <th scope="row" >
+        <i class="fa fa-trophy text-warning"></i>
+        PG Entrance Rank Details
+    </th>
+    <td>
+        @if(!empty($rankl))
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <p class="mb-2">
+                        <strong>Entrance Rank :</strong>
+                        <span class="badge badge-success">{{ $rankl }}</span>
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Entrance Mark:</strong>
+                        <span class="badge badge-info">{{ $finalIndexMark }}</span>
+                    </p>
+                </div>
+            </div>
+        @else
+            <div class="alert alert-warning mb-0">
+                You are not included in the rank list.
+            </div>
+        @endif
+    </td>
+</tr>
+
       
        @if($feestat==1)
     <tr>
@@ -782,16 +843,27 @@
      </div>
  
 
-     @endif
+    @if(Auth::user()->pgapp_adsc_sl != '1182')
+        <tr>
+            <th scope="row">Trial Allotment Status</th>
+            <td>
+                <div class="col-sm-12">
+                    <div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
 
+                        @if(isset($allotstatusres[0]) && !empty($allotstatusres[0]->program_name))
 
+                            @foreach($allotstatusres as $allot)
+                                <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                                <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                                <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                                <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                                <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
 
-
-     <tr hidden="">
+<!-- 
+     <tr>
     <th scope="row">Hall Ticket</th>
     <td>
-       
-        @if($publish_status == 1)
+        @if(Auth::user()->ent_hallticket_stat == 1 && $publish_status == 1)
             <div class="row">
                 
                 <div class="col-sm-6">
@@ -806,9 +878,20 @@
             </div>
         @endif
     </td>
-</tr>
+</tr> -->
+<th>Rank Deatils </th>
 
-   
+            
+         <!-- <tr>
+    <th>Entrance Rank</th>
+    <td>
+       
+            Rank: {{ $rankl }}<br>
+            Final Index Mark: {{ $finalIndexMark }}
+       
+      
+    </td>
+</tr> -->
 <tr hidden="">
       <th scope="row">Application Printout</th>
     
@@ -819,12 +902,12 @@
                     </form>
                     </div></td>
     </tr>
-    <tr hidden="">
-      <th scope="row">Option Printout</th>
+    <tr >
+      <th scope="row" hidden>Option Printout</th>
      
      
       <td> @if(Auth::user()->option_stat==1 || Auth::user()->option_stat==2 || Auth::user()->option_stat==3)
-                   <div class="col-sm-4" >
+                   <div class="col-sm-4" hidden >
                    <a href="{{route('printoption')}}" target="_blank" class="btn btn-flat btn-sm btn-success">
                         Download  <i class="fa fa-download"></i></a>
                         
@@ -838,16 +921,16 @@
 
 
 
-
+@if(Auth::user()->pgapp_adsc_sl != '1182')
                            
-                            <div class="container mt-4" hidden="">
+                            <div class="container mt-4" >
 
         <!-- Button to toggle table visibility -->
-        <button class="btn btn-info mb-3" id="toggleTableBtn">Show Allotment Details(For reference)</button>
+        <button class="btn btn-info mb-3" id="toggleTableBtn"> Trail Allotment Rank Details (For Reference)</button>
 
         <div id="tableContainer" style="display: none;">
             <!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
-            <h4 class="mb-4">First Allotment: Last rank details</h4>
+            <h4 class="mb-4">Trail Allotment: Last rank details</h4>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -886,7 +969,7 @@
             </table>
         </div>
     </div>
-
+@endif
     <style>
         #toggleTableBtn {
             font-size: 16px;
@@ -895,6 +978,92 @@
             text-align: center;
         }
     </style>
+    <style>
+ .option-edit-card{
+    background: linear-gradient(135deg, #f8fbff, #eef4ff);
+    border: 1px solid #dbe7ff;
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.option-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.option-icon{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#17a2b8;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.option-text{
+    flex:1;
+    min-width:250px;
+}
+
+.option-text h5{
+    margin-bottom:6px;
+    font-weight:700;
+    color:#1d3557;
+}
+
+.option-text p{
+    margin:0;
+    color:#5c677d;
+    font-size:15px;
+    line-height:1.6;
+}
+
+.modern-edit-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#17a2b8;
+    color:#fff !important;
+    padding:12px 24px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s ease;
+    box-shadow:0 4px 10px rgba(45,108,223,0.25);
+}
+
+.modern-edit-btn:hover{
+    background:#17a2b8;
+    transform:translateY(-2px);
+    color:#fff !important;
+    text-decoration:none;
+}
+
+@media(max-width:768px){
+
+    .option-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .option-action{
+        width:100%;
+    }
+
+    .modern-edit-btn{
+        width:100%;
+        justify-content:center;
+    }
+}
+</style>
 
     <script>
         document.getElementById('toggleTableBtn').addEventListener('click', function() {
@@ -907,13 +1076,7 @@
 
 
 
-      @if($result == 1234)
-          <a href="{{ route('reoptionindex') }}" class="btn btn-primary">
-              Edit Option
-          </a>
-      @else
-          <!--<p>edit option closed.</p>-->
-      @endif
+  
 
 
 
@@ -928,7 +1091,30 @@
     </div>
                          
                          
-                         
+  @if($result == 122222)
+<div class="option-edit-card" hidden>
+
+    <div class="option-content">
+        <div class="option-icon">
+            <i class="fa fa-sliders"></i>
+        </div>
+
+        <div class="option-text">
+            <h5>Need to update your options?</h5>
+            <p>
+                You can rearrange or modify your preferred centre options before the allotment process closes.
+            </p>
+        </div>
+
+        <div class="option-action">
+            <a href="{{ route('reoptionindex') }}" class="modern-edit-btn">
+                <i class="fa fa-pen"></i> Edit Options
+            </a>
+        </div>
+    </div>
+
+</div>
+@endif       
                          
     
    <div class="col-sm-2" hidden="true">

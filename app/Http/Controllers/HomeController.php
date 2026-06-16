@@ -776,7 +776,7 @@ $data['Application Fee'] = (float) $amnt;
             WHERE 
               tb_admncentre.adcen_adsc_sl = tb_admnscheme.adsc_sl AND
               tb_admnscheme.adsc_pgm_sl = tb_program.pgm_sl AND
-              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2025'",[$adscsl]);
+              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2026'",[$adscsl]);
 
       /// dd($centre_options);
              $count_centr=count($centre_options);
@@ -3422,9 +3422,10 @@ if(count($option)==0)
 //         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,special_reserv_flag from admn22.seat_allocation_matrix where app_id=? and app_id not in
 //                (SELECT admn22.intra_cent_allot_change.app_id FROM admn22.intra_cent_allot_change )",[$id]);
          
-         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix where app_id=?",[$id]);
+         $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix_not_published
+ where app_id=?",[$id]);
          
-          //dd($allotstatusres);
+        //   dd($allotstatusres);
        $special_reserv_flag=0;
          $allotstat=0;
          $payf=0;
@@ -3601,7 +3602,11 @@ $pubstatus=-1;
                                     ON tb_pgapp.pgapp_falseno = asw_pgfalseno.ent_exam_falseno
                                     WHERE tb_pgapp.pgapp_id = ?",[Auth::user()->pgapp_id]);
                                    // dd($index_mark );
+$rankDetails = DB::table('tbz_pgranklist')
+    ->where('rank_appid', Auth::user()->pgapp_id)
+    ->first();
 
+$finalIndexMark = $rankDetails->final_indexmark ?? null;
             if (!empty($index_mark) && isset($index_mark[0]->indexmark)) {
                 $mark = $index_mark[0]->indexmark;
             } else {
@@ -3633,7 +3638,7 @@ $pubstatus=-1;
                        // dd($result);
 
 
-            $seatAllocations = DB::table('admn22.seat_allocation_matrix')
+            $seatAllocations = DB::table('admn22.seat_allocation_matrix_not_published')
             ->select(
                 'app_allotment',
                 'pgm',
@@ -3654,7 +3659,7 @@ $pubstatus=-1;
             ->groupBy('app_allotment', 'pgm', 'cent')
             ->get();
 
-           // dd($seatAllocations);
+        //    dd($seatAllocations);
         
 //        dd($allotstat);
 //      return view('pgfinalview', compact('allotstatusres','allotstat',
@@ -3877,7 +3882,7 @@ $data['Application Fee'] = (float) $amnt;
       return view('pgfinalview', compact('allotstatusres','allotstat',
              'pay_details','adsc_sl',
              'payment_success_count','datenow','admstat','feestat','admstat',
-             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt'))->with('feeDetails', $data);
+             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark'))->with('feeDetails', $data);
       
       
       
