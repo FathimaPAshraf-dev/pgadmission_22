@@ -212,7 +212,7 @@ P.G. DIPLOMA PROGRAMMES 2026 - 27 </b><br>
 
 <p><strong>TRIAL ALLOTMENT :</strong> 13-06-2026</p>
 
-<p><strong>CENTRE OPTION EDIT LAST DATE :</strong> 14-06-2026 to 16-06-2026</p>
+<p><strong>CENTRE OPTION EDIT LAST DATE :</strong> 13-06-2026 to 16-06-2026</p>
 
 <p><strong>FIRST ALLOTMENT :</strong> 19-06-2026</p>
 

@@ -776,7 +776,7 @@ $data['Application Fee'] = (float) $amnt;
             WHERE 
               tb_admncentre.adcen_adsc_sl = tb_admnscheme.adsc_sl AND
               tb_admnscheme.adsc_pgm_sl = tb_program.pgm_sl AND
-              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2025'",[$adscsl]);
+              tb_centre.centre_sl = tb_admncentre.adcen_centre_sl  AND  tb_admnscheme.adsc_sl=?  AND tb_admnscheme.adsc_admnyear='2026'",[$adscsl]);
 
       /// dd($centre_options);
              $count_centr=count($centre_options);
@@ -3638,7 +3638,7 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
                        // dd($result);
 
 
-            $seatAllocations = DB::table('admn22.seat_allocation_matrix')
+            $seatAllocations = DB::table('admn22.seat_allocation_matrix_not_published')
             ->select(
                 'app_allotment',
                 'pgm',
@@ -3659,7 +3659,7 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
             ->groupBy('app_allotment', 'pgm', 'cent')
             ->get();
 
-           // dd($seatAllocations);
+        //    dd($seatAllocations);
         
 //        dd($allotstat);
 //      return view('pgfinalview', compact('allotstatusres','allotstat',

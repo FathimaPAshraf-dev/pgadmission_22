@@ -233,6 +233,8 @@
          
        
          
+       
+ 
         
          @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
         
@@ -281,15 +283,15 @@
                                 
                             @if( $admstat==0 )
                               <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                             </div>
                              <div class="card-header ">
-                               <h6 ><font style="color: red"> Admission request is not initiated. </font></h6>
+                               <!-- <h6 ><font style="color: red"> Admission request is not initiated. </font></h6> -->
 <!--                               Please contact the corresponding department / centre for admission-->
                             </div>
                            @elseif($admstat==1 ) 
                              <div class="card-header ">
-                               <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5>
+                               <!-- <h5 class="card-title m-0 "><b>ADMISSION PROCEDURE</b></h5> -->
                            </div>
                            
                            <!--fee date extension-->
@@ -322,7 +324,7 @@
                              @endif
                                 
                                 
-                                
+                              
                                 
 
                                 <!--</div>-->
@@ -755,7 +757,35 @@
     
   </thead>
   <tbody>
-      
+  
+      <tr hidden>
+    <th scope="row" >
+        <i class="fa fa-trophy text-warning"></i>
+        PG Entrance Rank Details
+    </th>
+    <td>
+        @if(!empty($rankl))
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <p class="mb-2">
+                        <strong>Entrance Rank :</strong>
+                        <span class="badge badge-success">{{ $rankl }}</span>
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Entrance Mark:</strong>
+                        <span class="badge badge-info">{{ $finalIndexMark }}</span>
+                    </p>
+                </div>
+            </div>
+        @else
+            <div class="alert alert-warning mb-0">
+                You are not included in the rank list.
+            </div>
+        @endif
+    </td>
+</tr>
+
       
        @if($feestat==1)
     <tr>
@@ -813,9 +843,21 @@
      </div>
  
 
-     @endif
+    @if(Auth::user()->pgapp_adsc_sl != '1182')
+        <tr>
+            <th scope="row">Trial Allotment Status</th>
+            <td>
+                <div class="col-sm-12">
+                    <div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
 
+                        @if(isset($allotstatusres[0]) && !empty($allotstatusres[0]->program_name))
 
+                            @foreach($allotstatusres as $allot)
+                                <p><strong>Program:</strong> {{ $allot->program_name }}</p>
+                                <p><strong>Centre:</strong> {{ $allot->centre }}</p>
+                                <p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+                                <p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+                                <p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
 
 <!-- 
      <tr>
@@ -839,7 +881,17 @@
 </tr> -->
 <th>Rank Deatils </th>
 
-   
+            
+         <!-- <tr>
+    <th>Entrance Rank</th>
+    <td>
+       
+            Rank: {{ $rankl }}<br>
+            Final Index Mark: {{ $finalIndexMark }}
+       
+      
+    </td>
+</tr> -->
 <tr hidden="">
       <th scope="row">Application Printout</th>
     
@@ -869,7 +921,7 @@
 
 
 
-
+@if(Auth::user()->pgapp_adsc_sl != '1182')
                            
                             <div class="container mt-4" >
 
@@ -917,7 +969,7 @@
             </table>
         </div>
     </div>
-
+@endif
     <style>
         #toggleTableBtn {
             font-size: 16px;
