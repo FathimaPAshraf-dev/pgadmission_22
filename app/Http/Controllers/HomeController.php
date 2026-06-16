@@ -3425,7 +3425,7 @@ if(count($option)==0)
          $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix_not_published
  where app_id=?",[$id]);
          
-          //dd($allotstatusres);
+        //   dd($allotstatusres);
        $special_reserv_flag=0;
          $allotstat=0;
          $payf=0;
