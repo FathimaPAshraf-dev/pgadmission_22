@@ -97,8 +97,8 @@ For any such issue please write to us at helpdesk@ssus.ac.in</p>
 <input type="hidden" name="order_id" value="PG{{ Auth::user()->pgapp_id }}{{ time() }}">
 <input type="hidden" name="currency" value="INR">
 
-<input type="hidden" name="redirect_url" value="https://pgadmission.ssus.ac.in/pay_details">
-<input type="hidden" name="cancel_url" value="https://pgadmission.ssus.ac.in/pay_details">
+<input type="hidden" name="redirect_url" value="https://pg.ssus.ac.in/pay_details">
+<input type="hidden" name="cancel_url" value="https://pg.ssus.ac.in/pay_details">
 
 <input type="hidden" name="merchant_param1" value="{{ Auth::user()->pgapp_id }}">
 <input type="hidden" name="merchant_param2" value="PG-APPLICATION-FEE-2026">
@@ -168,16 +168,411 @@ Application Printout <i class="fa fa-download" aria-hidden="true"></i>
 </table>
 <br>
 @endif
-@if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
-@if($allotstat==0)
-<!-- <div class="card-header " >
-<h5 class="card-title m-0 "><b>ALLOTMENT DETAILS</b></h5>
+
+<table class="table table-bordered table-hover table-responsive w-100 d-block d-md-table" >
+<thead>
+</thead>
+<tbody>
+<tr hidden>
+<th scope="row" >
+<i class="fa fa-trophy text-warning"></i>
+PG Entrance Rank Details
+</th>
+<td>
+@if(!empty($rankl))
+<div class="card border-0 shadow-sm">
+<div class="card-body p-3">
+<p class="mb-2">
+<strong>Entrance Rank :</strong>
+<span class="badge badge-success">{{ $rankl }}</span>
+</p>
+
+<p class="mb-0">
+<strong>Entrance Mark:</strong>
+<span class="badge badge-info">{{ $finalIndexMark }}</span>
+</p>
 </div>
-<div class="card-header ">
-<h4 class="card-title m-0 "><font style="color: green">Happy to inform that you are selected for PG Admission. Please download the Interview Memo</font></h4>
-<a href="{{route('pginterviewmemo2022')}}" target="_blank" class="btn btn-flat btn-sm btn-danger">
-Interview Memo <i class="fa fa-download"></i></a>
-</div> -->
+</div>
+@else
+<div class="alert alert-warning mb-0">
+You are not included in the rank list.
+</div>
+@endif
+</td>
+</tr>
+
+@if($feestat==1)
+<tr>
+<th scope="row">Admission Fee Receipt</th>
+<td> 
+<div class="col-sm-4" >
+<a href="{{route('admfeereceipt2022')}}" target="_blank" class="btn btn-flat btn-sm btn-success">
+Download <i class="fa fa-download"></i></a>
+</div> 
+</td>
+</tr> 
+@endif
+
+@if($allotstat == 1)
+
+@if(Auth::user()->pgapp_adsc_sl != '1182')
+<tr>
+<th scope="row">First Allotment Status</th>
+<td>
+<div class="col-sm-12">
+<div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
+
+@if(isset($allotstatusres[0]) && !empty($allotstatusres[0]->program_name))
+<div style="
+    padding:8px 12px;
+    margin-bottom:12px;
+    border-left:4px solid #28a745;
+    background:rgba(40,167,69,0.08);
+    color:#155724;
+    border-radius:4px;
+    font-size:14px;
+">
+    🎉 <strong>Congratulations!</strong> You are included in the First Allotment.
+</div>
+@foreach($allotstatusres as $allot)
+<p><strong>Program:</strong> {{ $allot->program_name }}</p>
+<p><strong>Centre:</strong> {{ $allot->centre }}</p>
+<p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+<p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+<p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+@if(!$loop->last)
+<hr>
+@endif
+@endforeach
+
+@else
+
+<div class="alert alert-warning mb-0">
+<strong>You are not included in the Rank List.</strong>
+</div>
+
+@endif
+
+</div>
+</div>
+</td>
+</tr>
+@endif
+
+@elseif($allotstat == 0)
+
+<tr>
+<th scope="row">First Allotment Status</th>
+<td>
+<div style="
+padding: 15px 20px;
+background-color: #fff8e1;
+border-left: 4px solid #f02906;
+border-radius: 5px;
+color: #856404;
+">
+You have not been allotted a seat in this round. Please wait for the upcoming allotments.
+</div>
+</td>
+</tr>
+
+@endif
+
+<!-- 
+<tr>
+<th scope="row">Hall Ticket</th>
+<td>
+@if(Auth::user()->ent_hallticket_stat == 1 && $publish_status == 1)
+<div class="row">
+<div class="col-sm-6">
+<a href="{{ route('hallticket2022') }}" target="_blank" class="btn btn-info btn-sm btn-flat">
+Download <i class="fa fa-download"></i>
+</a>
+</div>
+<div class="col-sm-6" hidden="">
+<strong>Index Mark:</strong> {{ $mark }} <br/>
+<strong>Rank:</strong> {{ $rankl }}
+</div>
+</div>
+@endif
+</td>
+</tr> -->
+
+<!-- <tr>
+<th>Entrance Rank</th>
+<td>
+Rank: {{ $rankl }}<br>
+Final Index Mark: {{ $finalIndexMark }}
+</td>
+</tr> -->
+<tr hidden="">
+<th scope="row">Application Printout</th>
+<td><div class="col-sm-4">
+<form action="{{route('getpdf')}}" method="get" name="pdffrom">
+<!--{{Auth::user()->pgapp_name}}<br><br>-->
+<button type="submit" name="pdffrom" class="btn btn-info btn-sm">Download <i class="fa fa-download" aria-hidden="true"></i></button>
+</form>
+</div></td>
+</tr>
+<tr>
+<th scope="row">
+<i class="fa fa-file-pdf-o text-info"></i> Option Printout
+</th>
+
+<td>
+@if(in_array(Auth::user()->option_stat, [1,2,3]))
+
+<span style="color:#6c757d; margin-right:10px;">
+Download your submitted options
+</span>
+
+<a href="{{ route('printoption') }}"
+target="_blank"
+style="
+background:#17a2b8;
+color:#fff;
+padding:6px 12px;
+border-radius:4px;
+text-decoration:none;
+font-size:13px;
+font-weight:500;
+">
+<i class="fa fa-download"></i> Download
+</a>
+
+@endif
+</td>
+</tr>
+</table>
+
+
+@if(Auth::user()->pgapp_adsc_sl != '1182')
+<div class="container mt-4" >
+
+<!-- Button to toggle table visibility -->
+<button class="btn btn-info mb-3" id="toggleTableBtn"> First Allotment - Last Rank Details (For Reference)</button>
+
+<div id="tableContainer" style="display: none;">
+<!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
+<h4 class="mb-4">First Allotment: Last rank details</h4>
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Allotment Type</th>
+<th>Program</th>
+<th>Centre</th>
+<th>Open</th>
+<th>Ezhava</th>
+<th>Muslim</th>
+<th>OBH</th>
+<th>OBX</th>
+<th>LC/SIUC</th>
+<th>SC</th>
+<th>ST</th>
+<th>EWS</th>
+</tr>
+</thead>
+<tbody>
+@foreach($seatAllocations as $allocation)
+<tr>
+<td>{{ $allocation->app_allotment }}</td>
+<td>{{ $allocation->adscname }}</td>
+<td>{{ $allocation->centcode }}</td>
+<td>{{ $allocation->open ?? '-' }}</td>
+<td>{{ $allocation->ezhava ?? '-' }}</td>
+<td>{{ $allocation->muslim ?? '-' }}</td>
+<td>{{ $allocation->obh ?? '-' }}</td>
+<td>{{ $allocation->obx ?? '-' }}</td>
+<td>{{ $allocation->lc_siuc ?? '-' }}</td>
+<td>{{ $allocation->sc ?? '-' }}</td>
+<td>{{ $allocation->st ?? '-' }}</td>
+<td>{{ $allocation->ews ?? '-' }}</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+</div>
+</div>
+@endif
+<style>
+#toggleTableBtn {
+font-size: 16px;
+}
+.table th, .table td {
+text-align: center;
+}
+</style>
+<style>
+.option-edit-card{
+background: linear-gradient(135deg, #f8fbff, #eef4ff);
+border: 1px solid #dbe7ff;
+border-radius: 18px;
+padding: 22px;
+margin-top: 25px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.option-content{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.option-icon{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#17a2b8;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+}
+
+.option-text{
+flex:1;
+min-width:250px;
+}
+
+.option-text h5{
+margin-bottom:6px;
+font-weight:700;
+color:#1d3557;
+}
+
+.option-text p{
+margin:0;
+color:#5c677d;
+font-size:15px;
+line-height:1.6;
+}
+
+.modern-edit-btn{
+display:inline-flex;
+align-items:center;
+gap:8px;
+background:#17a2b8;
+color:#fff !important;
+padding:12px 24px;
+border-radius:12px;
+text-decoration:none;
+font-weight:600;
+transition:0.3s ease;
+box-shadow:0 4px 10px rgba(45,108,223,0.25);
+}
+
+.modern-edit-btn:hover{
+background:#17a2b8;
+transform:translateY(-2px);
+color:#fff !important;
+text-decoration:none;
+}
+
+@media(max-width:768px){
+
+.option-content{
+flex-direction:column;
+text-align:center;
+}
+
+.option-action{
+width:100%;
+}
+
+.modern-edit-btn{
+width:100%;
+justify-content:center;
+}
+}
+</style>
+
+<script>
+document.getElementById('toggleTableBtn').addEventListener('click', function() {
+const tableContainer = document.getElementById('tableContainer');
+const buttonText = tableContainer.style.display === 'none' ? 'Hide Allotment Details' : 'Show Allotment Details(For reference)';
+tableContainer.style.display = tableContainer.style.display === 'none' ? 'block' : 'none';
+this.textContent = buttonText;
+});
+</script>
+
+
+
+
+</div>
+</div> 
+</div> 
+</div>
+</div>
+@if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
+@if($allotstat==100)
+@if(request()->ip() == '10.10.50.2')
+<div class="container mt-4 mb-4">
+
+    <div style="
+        background:#f8fff8;
+        border:1px solid #d4edda;
+        border-left:5px solid #28a745;
+        padding:25px;
+        border-radius:4px;">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-9 text-left">
+
+                <h5 style="
+                    color:#155724;
+                    font-weight:600;
+                    margin-bottom:10px;">
+                    <i class="fa fa-check-circle"></i>
+                    Provisional Selection for PG Admission
+                </h5>
+
+                <p style="
+                    margin:0;
+                    color:#495057;
+                    font-size:15px;
+                    line-height:1.7;">
+                    Congratulations! You have been provisionally selected for
+                    admission. Please download the Interview Memo for further
+                    instructions regarding the admission process.
+                </p>
+
+            </div>
+
+            <div class="col-md-3 text-center mt-3 mt-md-0">
+
+                <a href="{{ route('pginterviewmemo2022') }}"
+                   target="_blank"
+                   class="btn btn-success">
+                    <i class="fa fa-download"></i>
+                    Download Memo
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+    @endif
+
+  <div style="
+    
+    
+    padding:10px 0;
+   
+    margin:15px 0;">
+
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+        <span style="color:#856404; font-weight:bold; font-size:16px;">
+            📢 Interview Memo will be published soon. Candidates are advised to visit the portal regularly for updates.
+        </span>
+    </marquee>
+
+</div>
 <!--<div class="card-body">-->
 <tr>
 
@@ -562,410 +957,64 @@ For any issues related to online payment please write to us, helpdesk@ssus.ac.in
 <h5 class="card-title m-0 danger"><font style="color: red">You are not in allotment list. Better luck next allotment.</font></h5>
 </div>-->
 @endif
-<table class="table table-bordered table-hover table-responsive w-100 d-block d-md-table" >
-<thead>
-</thead>
-<tbody>
-<tr hidden>
-<th scope="row" >
-<i class="fa fa-trophy text-warning"></i>
-PG Entrance Rank Details
-</th>
-<td>
-@if(!empty($rankl))
-<div class="card border-0 shadow-sm">
-<div class="card-body p-3">
-<p class="mb-2">
-<strong>Entrance Rank :</strong>
-<span class="badge badge-success">{{ $rankl }}</span>
-</p>
-
-<p class="mb-0">
-<strong>Entrance Mark:</strong>
-<span class="badge badge-info">{{ $finalIndexMark }}</span>
-</p>
-</div>
-</div>
-@else
-<div class="alert alert-warning mb-0">
-You are not included in the rank list.
-</div>
-@endif
-</td>
-</tr>
-
-@if($feestat==1)
-<tr>
-<th scope="row">Admission Fee Receipt</th>
-<td> 
-<div class="col-sm-4" >
-<a href="{{route('admfeereceipt2022')}}" target="_blank" class="btn btn-flat btn-sm btn-success">
-Download <i class="fa fa-download"></i></a>
-</div> 
-</td>
-</tr> 
-@endif
-@if($allotstat == 10)
-
-@if(Auth::user()->pgapp_adsc_sl != '1182')
-<tr>
-<th scope="row">Trial Allotment Status</th>
-<td>
-<div class="col-sm-12">
-<div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
-
-@if(isset($allotstatusres[0]) && !empty($allotstatusres[0]->program_name))
-
-@foreach($allotstatusres as $allot)
-<p><strong>Program:</strong> {{ $allot->program_name }}</p>
-<p><strong>Centre:</strong> {{ $allot->centre }}</p>
-<p><strong>Community:</strong> {{ $allot->app_cat }}</p>
-<p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
-<p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
-
-@if(!$loop->last)
-<hr>
-@endif
-@endforeach
-
-@else
-
-<div class="alert alert-warning mb-0">
-<strong>You are not included in the Rank List.</strong>
-</div>
-
-@endif
-
-</div>
-</div>
-</td>
-</tr>
-@endif
-
-@elseif($allotstat == 0)
-
-<tr>
-<th scope="row">Trial Allotment Status</th>
-<td>
-<div style="
-padding: 15px 20px;
-background-color: #fff8e1;
-border-left: 4px solid #f02906;
-border-radius: 5px;
-color: #856404;
-">
-You have not been allotted a seat in this round. Please wait for the upcoming allotments.
-</div>
-</td>
-</tr>
-
-@endif
-
-<!-- 
-<tr>
-<th scope="row">Hall Ticket</th>
-<td>
-@if(Auth::user()->ent_hallticket_stat == 1 && $publish_status == 1)
-<div class="row">
-<div class="col-sm-6">
-<a href="{{ route('hallticket2022') }}" target="_blank" class="btn btn-info btn-sm btn-flat">
-Download <i class="fa fa-download"></i>
-</a>
-</div>
-<div class="col-sm-6" hidden="">
-<strong>Index Mark:</strong> {{ $mark }} <br/>
-<strong>Rank:</strong> {{ $rankl }}
-</div>
-</div>
-@endif
-</td>
-</tr> -->
-
-<!-- <tr>
-<th>Entrance Rank</th>
-<td>
-Rank: {{ $rankl }}<br>
-Final Index Mark: {{ $finalIndexMark }}
-</td>
-</tr> -->
-<tr hidden="">
-<th scope="row">Application Printout</th>
-<td><div class="col-sm-4">
-<form action="{{route('getpdf')}}" method="get" name="pdffrom">
-<!--{{Auth::user()->pgapp_name}}<br><br>-->
-<button type="submit" name="pdffrom" class="btn btn-info btn-sm">Download <i class="fa fa-download" aria-hidden="true"></i></button>
-</form>
-</div></td>
-</tr>
-<tr>
-<th scope="row">
-<i class="fa fa-file-pdf-o text-info"></i> Option Printout
-</th>
-
-<td>
-@if(in_array(Auth::user()->option_stat, [1,2,3]))
-
-<span style="color:#6c757d; margin-right:10px;">
-Download your submitted options
-</span>
-
-<a href="{{ route('printoption') }}"
-target="_blank"
-style="
-background:#17a2b8;
-color:#fff;
-padding:6px 12px;
-border-radius:4px;
-text-decoration:none;
-font-size:13px;
-font-weight:500;
-">
-<i class="fa fa-download"></i> Download
-</a>
-
-@endif
-</td>
-</tr>
-</table>
-
-
-@if(Auth::user()->pgapp_adsc_sl != '1182')
-<div class="container mt-4" >
-
-<!-- Button to toggle table visibility -->
-<button class="btn btn-info mb-3" id="toggleTableBtn"> Trail Allotment - Last Rank Details (For Reference)</button>
-
-<div id="tableContainer" style="display: none;">
-<!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
-<h4 class="mb-4">Trail Allotment: Last rank details</h4>
-<table class="table table-bordered table-striped">
-<thead>
-<tr>
-<th>Allotment Type</th>
-<th>Program</th>
-<th>Centre</th>
-<th>Open</th>
-<th>Ezhava</th>
-<th>Muslim</th>
-<th>OBH</th>
-<th>OBX</th>
-<th>LC/SIUC</th>
-<th>SC</th>
-<th>ST</th>
-<th>EWS</th>
-</tr>
-</thead>
-<tbody>
-@foreach($seatAllocations as $allocation)
-<tr>
-<td>{{ $allocation->app_allotment }}</td>
-<td>{{ $allocation->adscname }}</td>
-<td>{{ $allocation->centcode }}</td>
-<td>{{ $allocation->open ?? '-' }}</td>
-<td>{{ $allocation->ezhava ?? '-' }}</td>
-<td>{{ $allocation->muslim ?? '-' }}</td>
-<td>{{ $allocation->obh ?? '-' }}</td>
-<td>{{ $allocation->obx ?? '-' }}</td>
-<td>{{ $allocation->lc_siuc ?? '-' }}</td>
-<td>{{ $allocation->sc ?? '-' }}</td>
-<td>{{ $allocation->st ?? '-' }}</td>
-<td>{{ $allocation->ews ?? '-' }}</td>
-</tr>
-@endforeach
-</tbody>
-</table>
-</div>
-</div>
-@endif
-<style>
-#toggleTableBtn {
-font-size: 16px;
-}
-.table th, .table td {
-text-align: center;
-}
-</style>
-<style>
-.option-edit-card{
-background: linear-gradient(135deg, #f8fbff, #eef4ff);
-border: 1px solid #dbe7ff;
-border-radius: 18px;
-padding: 22px;
-margin-top: 25px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
-
-.option-content{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.option-icon{
-width:60px;
-height:60px;
-border-radius:50%;
-background:#17a2b8;
-color:#fff;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:24px;
-}
-
-.option-text{
-flex:1;
-min-width:250px;
-}
-
-.option-text h5{
-margin-bottom:6px;
-font-weight:700;
-color:#1d3557;
-}
-
-.option-text p{
-margin:0;
-color:#5c677d;
-font-size:15px;
-line-height:1.6;
-}
-
-.modern-edit-btn{
-display:inline-flex;
-align-items:center;
-gap:8px;
-background:#17a2b8;
-color:#fff !important;
-padding:12px 24px;
-border-radius:12px;
-text-decoration:none;
-font-weight:600;
-transition:0.3s ease;
-box-shadow:0 4px 10px rgba(45,108,223,0.25);
-}
-
-.modern-edit-btn:hover{
-background:#17a2b8;
-transform:translateY(-2px);
-color:#fff !important;
-text-decoration:none;
-}
-
-@media(max-width:768px){
-
-.option-content{
-flex-direction:column;
-text-align:center;
-}
-
-.option-action{
-width:100%;
-}
-
-.modern-edit-btn{
-width:100%;
-justify-content:center;
-}
-}
-</style>
-
-<script>
-document.getElementById('toggleTableBtn').addEventListener('click', function() {
-const tableContainer = document.getElementById('tableContainer');
-const buttonText = tableContainer.style.display === 'none' ? 'Hide Allotment Details' : 'Show Allotment Details(For reference)';
-tableContainer.style.display = tableContainer.style.display === 'none' ? 'block' : 'none';
-this.textContent = buttonText;
-});
-</script>
-
-
-
-
-</div>
-</div> 
-</div> 
-</div>
-</div>
 @if(Auth::user()->pgapp_adsc_sl != '1182') 
 @if($result == 1)
 
 <div style="background:#fff8e6;border:1px solid #ffd591;border-left:6px solid #fa8c16;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
+```
 <div style="display:flex;align-items:center;margin-bottom:15px;">
-<div style="font-size:30px;margin-right:12px;">⚠️</div>
-<div>
-<h4 style="margin:0;color:#d46b08;font-weight:700;">
-Trial Allotment Notice
-</h4>
-<small style="color:#666;">
-Please read the following information carefully.
-</small>
-</div>
-</div>
-
-<div style="background:#ffffff;border-radius:8px;padding:15px;margin-bottom:12px;border:1px solid #f0f0f0;">
-
-
-<p style="margin-bottom:10px;line-height:1.8;color:#333;">
-<strong style="color:#cf1322;">
-ട്രയൽ അലോട്ട്മെന്റ് പ്രവേശനത്തിനുള്ള അന്തിമ അലോട്ട്മെന്റ് അല്ല.
-</strong>
-അപേക്ഷയിൽ നൽകിയിരിക്കുന്ന ഓപ്ഷനുകൾ, റാങ്ക്, സംവരണ മാനദണ്ഡങ്ങൾ എന്നിവയുടെ അടിസ്ഥാനത്തിൽ തയ്യാറാക്കിയ പ്രാഥമിക അലോട്ട്മെന്റാണിത്.
-</p>
-
-<p style="margin-bottom:0;line-height:1.8;color:#333;">
-ട്രയൽ അലോട്ട്മെന്റിന്റെ അടിസ്ഥാനത്തിൽ വിദ്യാർത്ഥികൾക്ക് അവരുടെ ഓപ്ഷനുകൾ
-പുനഃക്രമീകരിക്കാനോ, പുതിയ ഓപ്ഷനുകൾ ചേർക്കാനോ, നിലവിലുള്ള ഓപ്ഷനുകൾ ഒഴിവാക്കാനോ അവസരമുണ്ട്.
-ഓപ്ഷൻ ക്രമീകരണത്തിനായി നിശ്ചയിച്ചിരിക്കുന്ന സമയപരിധി പാലിക്കേണ്ടതാണ്.
-</p>
-
+    <div style="font-size:30px;margin-right:12px;">⚠️</div>
+    <div>
+        <h4 style="margin:0;color:#d46b08;font-weight:700;">
+            First Allotment Notice
+        </h4>
+        <small style="color:#666;">
+            Please read the following information carefully.
+        </small>
+    </div>
 </div>
 
 <div style="background:#ffffff;border-radius:8px;padding:15px;border:1px solid #f0f0f0;">
 
+    <p style="line-height:1.8;color:#333;margin-bottom:15px;">
+        <strong style="color:#cf1322;">ഒന്നാം അലോട്ട്മെന്റുമായി ബന്ധപ്പെട്ട പ്രധാന നിർദ്ദേശം:</strong><br>
+        ഒന്നാം അലോട്ട്മെന്റിൽ ഒരു ക്യാമ്പസിൽ പ്രവേശനം ലഭിച്ച അപേക്ഷകർ തുടർ അലോട്ട്മെന്റുകളിൽ ഉയർന്ന ഓപ്ഷനുകൾ (Higher Options) പരിഗണിക്കപ്പെടാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, അനുവദിക്കപ്പെട്ട ക്യാമ്പസിൽ നിശ്ചിത സമയപരിധിക്കുള്ളിൽ പ്രവേശനം നേടേണ്ടതാണ്.
 
-<p style="margin-bottom:10px;line-height:1.8;color:#333;">
-<strong style="color:#cf1322;">
-Trial Allotment is NOT the final allotment for admission.
-</strong>
-It is a preliminary allotment prepared based on the options submitted in the application,
-entrance rank, and reservation criteria.
-</p>
+        പ്രവേശനം നേടാത്ത അപേക്ഷകരെ ഉയർന്ന ഓപ്ഷൻ പരിഗണനയ്ക്കോ തുടർ അലോട്ട്മെന്റുകളിലേക്കോ അർഹരായി പരിഗണിക്കുകയില്ല.
 
-<p style="margin-bottom:10px;line-height:1.8;color:#333;">
-Based on the trial allotment, candidates may:
-</p>
+        
+    </p>
 
-<ul style="margin-left:20px;color:#333;line-height:1.8;">
-<li>Rearrange existing options.</li>
-<li>Add new options.</li>
-<li>Remove unwanted options.</li>
-<li>Review preferences before final allotment.</li>
-</ul>
+    <hr style="border:0;border-top:1px solid #e8e8e8;margin:15px 0;">
 
-<p style="margin-bottom:0;line-height:1.8;color:#333;">
-<strong>
-Candidates must complete option modification within the prescribed time limit.
-</strong>
-</p>
+    <p style="line-height:1.8;color:#333;margin-bottom:0;">
+        <strong style="color:#cf1322;">Important Instruction Regarding First Allotment:</strong><br>
+        Candidates who have been allotted admission in a campus through the First Allotment and wish to be considered for Higher Options in subsequent allotments must secure admission in the allotted campus within the prescribed time limit.
+
+        Candidates who fail to take admission in the campus allotted through the First Allotment will not be eligible for consideration under Higher Options or for participation in subsequent allotments.
+
+        Therefore, candidates are advised to confirm their admission in the allotted campus within the stipulated time to retain eligibility for further allotment processes.
+    </p>
+
+</div>
+```
 
 </div>
 
-</div>
 
-<div style="
+
+
+<!-- <div style="
 background:#f8fcfd;
 border:1px solid #d1ecf1;
 border-left:4px solid #17a2b8;
 border-radius:8px;
 padding:15px 20px;
 margin:15px 0;
-">
+"> -->
 
-<div style="
+<!-- <div style="
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -973,27 +1022,27 @@ flex-wrap:wrap;
 gap:15px;
 ">
 
-<div>
-<h5 style="
+<div> -->
+<!-- <h5 style="
 margin:0 0 5px 0;
 color:#17a2b8;
 font-weight:600;
 ">
 <i class="fa fa-sliders"></i>
 Update Your Options
-</h5>
+</h5> -->
 
-<p style="
+<!-- <p style="
 margin:0;
 color:#6c757d;
 font-size:14px;
 line-height:1.5;
 ">
 You can rearrange, add, or remove your preferred centre options before the allotment process closes.
-</p>
-</div>
+</p> -->
+<!-- </div> -->
 
-<a href="{{ route('reoptionindex') }}"
+<!-- <a href="{{ route('reoptionindex') }}"
 style="
 background:#17a2b8;
 color:#fff;
@@ -1005,11 +1054,11 @@ font-weight:600;
 white-space:nowrap;
 ">
 <i class="fa fa-pen"></i> Edit Options
-</a>
+</a> -->
 
-</div>
+<!-- </div> -->
 
-</div>
+<!-- </div> -->
 
 @endif
 @endif

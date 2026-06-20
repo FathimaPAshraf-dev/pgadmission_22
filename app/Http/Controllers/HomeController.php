@@ -3357,8 +3357,6 @@ if(count($option)==0)
 
     public function pay_details()
     {
-        
-     
        
 //        if(Auth::user()->pg_edit_appl == 1 || $this->payment_status() == 0   ){
 //              return redirect('home');
@@ -5467,9 +5465,11 @@ if($transactionResponse->validateResponse($_POST)){
      $adscl=Auth::user()->pgapp_adsc_sl;  
      $adscname = DB::select('select adsc_name,pgm_name from  tb_admnscheme 
           inner join tb_program on pgm_sl=adsc_pgm_sl where adsc_sl=? ' , [$adscl]);
+   
 
      foreach($adscname as $key){
          $pgmname=$key->pgm_name;
+         $courseName=$key->adsc_name;
      }
      $fee =[];
 //     $allotment = DB::select('select *,getcentrename(centid) as allot_cent,getpgm(pgmid) as pgm FROM tb_pgallotmentdate INNER JOIN
@@ -5486,7 +5486,7 @@ if($transactionResponse->validateResponse($_POST)){
            getpgm(pgm) AS pgm, 
            UPPER(seat) AS seat, 
            UPPER(weightage) AS weightage 
-    FROM admn22.seat_allocation_matrix 
+    FROM admn22.seat_allocation_matrix_not_published
     WHERE app_id = ?
 ', [$appid]);
 
@@ -5499,13 +5499,12 @@ if($transactionResponse->validateResponse($_POST)){
 //      if($adscl==1041 || $adscl==1054 || $adscl==1063 || $adscl==1064)   {
 //         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1054]); 
 //      } 
-       if($adscl==1126 || $adscl==1127 || $adscl==1124 || $adscl==1125)   {
-         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1126]); 
-      }
-      
-      if($adscl==1085)   {
-         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1085]); 
-      } 
+      $fee = DB::select(
+    'select fee_title, fee_gen ,fee_scstoec
+     from asw_admfee_list 
+     where fee_adsc_sl = ?',
+    [$adscl]
+);
             // dd($fee);
     if(empty($allotment)){
         return "If any memo download problem, please contact SSUS IT Section.";  
@@ -5514,7 +5513,7 @@ if($transactionResponse->validateResponse($_POST)){
 
 //        dd($fee);
 //        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl'));
-        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl','fee'));
+        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl','fee','courseName'));
 
         return $pdf->download('InterviewMemo.pdf');
      
