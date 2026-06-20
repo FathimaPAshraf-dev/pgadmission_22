@@ -508,8 +508,8 @@ this.textContent = buttonText;
 </div>
 </div>
 @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
-@if($allotstat==100)
-@if(request()->ip() == '10.10.50.2')
+@if($allotstat==1000)
+
 <div class="container mt-4 mb-4">
 
     <div style="
@@ -528,7 +528,7 @@ this.textContent = buttonText;
                     font-weight:600;
                     margin-bottom:10px;">
                     <i class="fa fa-check-circle"></i>
-                    Provisional Selection for PG Admission
+                   Download Allotement Memo And Fee Structure
                 </h5>
 
                 <p style="
@@ -536,8 +536,7 @@ this.textContent = buttonText;
                     color:#495057;
                     font-size:15px;
                     line-height:1.7;">
-                    Congratulations! You have been provisionally selected for
-                    admission. Please download the Interview Memo for further
+                     Please download the Interview Memo for further
                     instructions regarding the admission process.
                 </p>
 
@@ -557,22 +556,9 @@ this.textContent = buttonText;
         </div>
 
     </div>
-    @endif
 
-  <div style="
-    
-    
-    padding:10px 0;
-   
-    margin:15px 0;">
 
-    <marquee behavior="scroll" direction="left" scrollamount="5">
-        <span style="color:#856404; font-weight:bold; font-size:16px;">
-            📢 Interview Memo will be published soon. Candidates are advised to visit the portal regularly for updates.
-        </span>
-    </marquee>
 
-</div>
 <!--<div class="card-body">-->
 <tr>
 

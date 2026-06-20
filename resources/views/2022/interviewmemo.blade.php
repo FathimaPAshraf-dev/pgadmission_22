@@ -57,7 +57,7 @@
                        
 
                          <tr>
-                            <th>To,</th>
+                            <th>Name</th>
                             <th>Application ID</th>
                             <th>Community</th>
                         </tr>
