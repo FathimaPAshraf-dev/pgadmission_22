@@ -1952,7 +1952,7 @@ $category=DB::select("select category_sl,category_name from tb_category  ");
 
             $result_1=DB::select("select subcaste,id from tbz_reservation_list where community=? AND religion=? ORDER BY subcaste",[$community,$religion]);
 
-            //dd($result_1);
+            // dd($result_1);
                         $htmlcent = "<class=\"col-sm-4\" id=\"castediv\" name=\"castediv\">
                         <select class=\"form-control form-control-sm select2 col-md-8\"  id= \"pgapp_caste_sl\" name=\"pgapp_caste_sl\" >
                         <option value=\"\" >
@@ -1977,6 +1977,7 @@ public function subcaste(Request $request)
     $religion = $request->input('relgn');
 
     $result_1 = DB::select("select * from tb_subcaste where subc_caste_sl=? and subc_relgn_sl=?",[$caste,$religion]);
+    // dd($result_1);
 
     $htmlcent = "<class=\"col-sm-4\" id=\"subcastediv\" name=\"subcastediv\">
  <select  id= \"pgapp_subcaste_sl\" name=\"pgapp_subcaste_sl \">
@@ -3542,14 +3543,16 @@ if(count($option)==0)
         //   }
 
         // 1. CCAvenue payment
-$ccavenuePayments = TbzCcavenueTxn::where('client_code', Auth::user()->pgapp_id)
-->where('ucity_service', 'LIKE', "PG-ADMISSION-FEE-2025")
-->where('order_status', "Success")
-->get();
-
+$ccavenuePayments = DB::connection('pgsql2')
+    ->table('tbz_ccavenue_txns')
+    ->where('client_code', Auth::user()->pgapp_id)
+    ->where('ucity_service', 'LIKE', 'PG-ADMISSION-FEE-2026')
+    ->whereIn('order_status', ['Success', 'Shipped', 'Successfully'])
+    ->get();
+    // dd($ccavenuePayments);
 // 2. Atom payment
 $atomPayments = PaymentTrans::where('client_code', Auth::user()->pgapp_id)
-->where('ucity_service', "PG-ADMISSION-FEE-2025")
+->where('ucity_service', "PG-ADMISSION-FEE-2026")
 ->where('res_verified', "SUCCESS")
 ->get();
 
@@ -3579,7 +3582,14 @@ $pubstatus=-1;
           $pubstatus=$value->status;
       }
 
-       
+    $ccavenuefee = DB::connection('pgsql2')
+    ->table('tbz_ccavenue_txns')
+    ->where('client_code', $id)
+    ->where('ucity_service', 'LIKE', 'PG-ADMISSION-FEE-2026')
+    ->whereIn('order_status', ['Success', 'Shipped', 'Successfully'])
+    ->exists();
+
+$status = $ccavenuefee ? 1 : 0;
       $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
@@ -3880,7 +3890,7 @@ $data['Application Fee'] = (float) $amnt;
       return view('pgfinalview', compact('allotstatusres','allotstat',
              'pay_details','adsc_sl',
              'payment_success_count','datenow','admstat','feestat','admstat',
-             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark'))->with('feeDetails', $data);
+             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark','status'))->with('feeDetails', $data);
       
       
       

@@ -508,7 +508,7 @@ this.textContent = buttonText;
 </div>
 </div>
 @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
-@if($allotstat==1000)
+@if($allotstat==1)
 
 <div class="container mt-4 mb-4">
 
@@ -576,18 +576,44 @@ this.textContent = buttonText;
 </div>
 <!--fee date extension-->
 <!--@if($id!='ADMPG2402875')-->
-@if(Auth::user()->pgapp_id =='ADMPG2503500' || Auth::user()->pgapp_id =='ADMPG2503092' || Auth::user()->pgapp_id =='ADMPG2501281' || Auth::user()->pgapp_id =='ADMPG2502973'
-|| Auth::user()->pgapp_id =='ADMPG2500513' || Auth::user()->pgapp_id =='ADMPG2501273' || Auth::user()->pgapp_id =='ADMPG2500526' || Auth::user()->pgapp_id =='ADMPG2500512' || Auth::user()->pgapp_id =='ADMPG2501026'
-|| Auth::user()->pgapp_id =='ADMPG2502220' || Auth::user()->pgapp_id =='ADMPG2500411' || Auth::user()->pgapp_id =='ADMPG2502292' || Auth::user()->pgapp_id =='ADMPG2501924'
-|| Auth::user()->pgapp_id =='ADMPG2502579'
-|| Auth::user()->pgapp_id =='ADMPG2502027' || Auth::user()->pgapp_id =='ADMPG2502958'|| Auth::user()->pgapp_id =='ADMPG2500897' || Auth::user()->pgapp_id =='ADMPG2501181' 
-|| Auth::user()->pgapp_id =='ADMPG2500366' || Auth::user()->pgapp_id =='ADMPG2501247' || Auth::user()->pgapp_id =='ADMPG2503144' || Auth::user()->pgapp_id =='ADMPG2503008')
-<div class="card-body" >
-<a href="{{route('allotmentdetails2022')}}" class="btn btn-flat btn-sm btn-danger">
-Pay Admission Fee <i class="fa fa-rupee-sign "></i></a> 
+
+<div class="card-body text-center">
+
+    <div style="
+        background:#f8f9fa;
+        border:1px solid #dee2e6;
+        border-radius:15px;
+        padding:25px;
+        box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    ">
+
+       
+
+            <h5 style="color:#2c3e50;margin-bottom:15px;">
+                Admission Fee Payment
+            </h5>
+
+            <p style="color:#6c757d;margin-bottom:20px;">
+                Click the button below to proceed with your admission fee payment.
+            </p>
+
+            <a href="{{ route('allotmentdetails2022') }}"
+               class="btn btn-success btn-lg px-5 py-2"
+               style="
+                    border-radius:30px;
+                    font-weight:bold;
+                    box-shadow:0 4px 12px rgba(40,167,69,.3);
+               ">
+                <i class="fa fa-credit-card"></i>
+                Pay Admission Fee
+            </a>
+
+      
+
+    </div>
 
 </div>
-@endif
+
 <div class="card-header ">
 <h6 ><u style="color: red">About Online Payment:</u> If cash is debited from your account,don't try to do payment again.Sometimes payment will take 1 to 2 days to success.
 For any issues related to online payment please write to us, helpdesk@ssus.ac.in</h6>

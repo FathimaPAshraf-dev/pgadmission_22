@@ -57,11 +57,17 @@
                        
 
                          <tr>
+                            <th>Photo</th>
                             <th>Name</th>
                             <th>Application ID</th>
                             <th>Community</th>
                         </tr>
                         <tr>
+                                  <td>
+        @if(!empty(Auth::user()->pgapp_photo))
+      <img  src="{{asset('images/pgphoto/'.Auth::user()->pgapp_photo)}}" width="120" height="150" alt="user">
+        @endif
+    </td>
                         <td style="text-align: center;">{{Auth::user()->pgapp_name}}
                         </td>
                         

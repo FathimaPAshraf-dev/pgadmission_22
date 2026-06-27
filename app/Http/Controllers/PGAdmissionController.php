@@ -28,49 +28,85 @@ class PGAdmissionController extends Controller
         
         $id=Auth::user()->pgapp_id;
         $adscl=Auth::user()->pgapp_adsc_sl;
+        // dd($adscl);
   
          $allotusr=DB::select("select *,getcentrename(adm_centid) as centre,getpgm(adm_pgmid) as pgm from asw_pgadm where adm_appid=?",[$id]);
-
+// dd($allotusr);
          if ($allotusr) {
             $centid = $allotusr[0]->adm_centid;
         }
-       
+    //    dd($centid);
          foreach($allotusr as $key){
              $pgmid=$key->adm_pgmid;
          }
+        //  dd($pgmid);
          $allotstat=0;
           if (!empty($allotusr))
           {
               $allotstat=1;
           }
-
+$codes = [
+    'Uniform Fee' => 'UF',
+    'Matriculation Fee' => 'MF',
+    'Recognition Fee' => 'RF',
+    'NCC Fee' => 'NCC',
+    'Tuition Fee' => 'TF',
+    'Admission Fee' => 'AF',
+    'Special Fee' => 'SF',
+    'Department Development Fund' => 'DDF',
+    'First Sem Exam Fee' => 'FSEF',
+    'PTA' => 'PTA',
+    'Group Personal Accident Insurance Scheme' => 'GPAIS',
+    'Silver Jubilee Welfare Fund for Students' => 'SJWF',
+    'Caution Deposit' => 'CD',
+];
           $total_adm_fee = DB::select("SELECT * FROM asw_pgadm_feestucture WHERE appid = ? AND pgmid = ?", [$id, $adscl]);
-
+// dd($total_adm_fee);
                 $data = [];
 
                 foreach ($total_adm_fee as $fee) {
                     $data[$fee->fee_desc] = (float)$fee->amount;
                 }
-       
+     
         
+$merchant_param4 = '';
 
+foreach ($data as $feeName => $amount) {
+    $merchant_param4 .= ($codes[$feeName] ?? $feeName) . '_' . $amount . '+';
+}
+// dd($data);
+$merchant_param4 = rtrim($merchant_param4, '+');
+
+// dd($merchant_param4, strlen($merchant_param4));
+// dd([
+//     'data' => $data,
+//     'merchant_param4' => $merchant_param4,
+//     'total_fee' => array_sum($data),
+//     'amount' => $amount ?? null
+// ]);
           $account_code = null;
 
         $account_list=DB::select("select * from admn22.asw_account_list where pgm=? and centre=?",[$adscl,$centid]);
+        // dd($account_list);
 
         foreach($account_list as $key){
             $account_code=$key->account_code;
         }
-       // dd($adscl,$centid,$account_code);
-                  
-//      dd($allotusr);
-        $dt_now = Carbon::now();
+  
+
+$total_fee = collect($total_adm_fee)->sum(function ($fee) {
+    return (float) ($fee->amount ?? 0);
+});
+
+// dd($data);
+
+    $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
-        date_default_timezone_set('Asia/Calcutta');
+        date_default_timezone_set('Asia/Kolkata');
         $datenow = date("d/m/Y");
  
-        return view('2022.pgallotmentview', compact('allotusr','allotstat','pgmid','account_code'))->with('feeDetails', $data);
+        return view('2022.pgallotmentview', compact('allotusr','allotstat','pgmid','account_code','merchant_param4'))->with('feeDetails', $data);
 
 
 
@@ -413,27 +449,21 @@ $atomfee = DB::connection('pgsql2')->select("
     WHERE client_code = ? 
       AND ucity_service = ? 
       AND res_verified = ?", 
-    [$id, 'PG-ADMISSION-FEE-2025', 'SUCCESS']
+    [$id, 'PG-ADMISSION-FEE-2026', 'SUCCESS']
 );
 
 // CCAvenue payments
-$ccavenuefee = DB::connection('pgsql2')->select("
-    SELECT * 
-    FROM tbz_ccavenue_txns 
-    WHERE client_code = ? 
-      AND ucity_service LIKE ? 
-      AND order_status = ?", 
-    [$id, 'PG-ADMISSION-FEE-2025', 'Success']
-);
-
+$ccavenuefee = DB::connection('pgsql2')
+    ->table('tbz_ccavenue_txns')
+    ->where('client_code', $id)
+    ->where('ucity_service', 'LIKE', 'PG-ADMISSION-FEE-2026')
+    ->whereIn('order_status', ['Success', 'Shipped', 'Successfully'])
+    ->get();
 // Merge both payments into one array
-$admfee = array_merge($atomfee, $ccavenuefee);
+$admfee =  $ccavenuefee;
 
-//dd($atomfee);
-        
-        
-       
-        
+//dd($admfee);
+      
         
         $flag=0;
         if(count($admfee)>1){
@@ -442,7 +472,7 @@ $admfee = array_merge($atomfee, $ccavenuefee);
         $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
-            date_default_timezone_set("Asia/Calcutta");
+            date_default_timezone_set("Asia/Kolkata");
             $timenow= date("H:i:s");
 
             $pdf = PDF::loadView('2022.pgfeerecipt2022',compact('details','curnt_date','timenow','feestructure','admfee','flag'));
