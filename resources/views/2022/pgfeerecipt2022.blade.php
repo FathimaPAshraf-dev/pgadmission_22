@@ -52,7 +52,7 @@
 
 
     <p style="text-align: center;  font-family: arial, sans-serif;font-size: 14px;">
-        <u><b>PG ADMISSION 2025- FEE RECEIPT</b></u>
+        <u><b>PG ADMISSION 2026- FEE RECEIPT</b></u>
     </p>
 
     <div class="col-sm-12">
@@ -144,33 +144,30 @@
         </tr>
         <tr>
             <td>University Transaction id</td>
-            <td>{{$key->merchanttxnid}}</td>
+            <td>{{$key->tid}}</td>
         </tr>
         <tr>
             <td>University Service name</td>
             <td>{{$key->ucity_service}}</td>
         </tr>
-        <tr>
-            <td>Bank Name</td>
-            <td>{{$key->res_bankname}}</td>
-        </tr>
+        
         <tr>
             <td>Date of payment</td>
-            <td>{{$key->res_txn_date ?? $key->tdate}}</td>
+            <td>{{ $key->tdate}}</td>
         </tr>
         <tr>
-            <td>Bank Reference No</td>
-            <td>{{$key->res_bid}}</td>
+            <td>OrderID</td>
+            <td>{{$key->order_id}}</td>
         </tr>
 
         <tr>
             <td>Pay Amount</td>
-            <td>{{$key->trans_amt}}</td>
+            <td>{{$key->amount}}</td>
         </tr>
         <tr>
             <td>Payment Status</td>
             <td>
-                {{ $key->res_verified ?? $key->order_status }}
+               Sucesss
             </td>
         </tr>
 

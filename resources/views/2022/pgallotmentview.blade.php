@@ -50,21 +50,22 @@
             <input type="hidden" name="merchant_id" value="3147015">
             <input type="hidden" name="order_id" value="{{ random_int(10000, 99999) }}">
             <input type="hidden" name="currency" value="INR">
-            <input type="hidden" name="redirect_url" value="https://pgadmission.ssus.ac.in/payResponse"/>
-            <input type="hidden" name="cancel_url" value="https://pgadmission.ssus.ac.in/payResponse"/>
-            <input type="hidden" name="merchant_param2" id="merchant_param2" value="PG-ADMISSION-FEE-2025">
+            <input type="hidden" name="redirect_url" value="https://pg.ssus.ac.in/payResponse"/>
+            <input type="hidden" name="cancel_url" value="https://pg.ssus.ac.in/payResponse"/>
+            <input type="hidden" name="merchant_param2" id="merchant_param2" value="PG-ADMISSION-FEE-2026">
             <input type="hidden" name="merchant_param3" id="merchant_param3" value="{{ Auth::user()->pgapp_id }}">
             <input type="hidden" name="sub_account_id" id="sub_account_id" value="{{ $account_code }}">
 
             <input type="hidden" name="merchant_param1" id="merchant_param1" value="{{ Auth::user()->pgapp_id}}">
+          <input type="hidden" name="merchant_param4" id="merchant_param4" value="{{$merchant_param4}}">
             @foreach($allotusr as $key)
             <input type="hidden" name="amount" id="amount" value="{{$key->adm_fees}}">
             @endforeach
             <input type="hidden" name="language" value="EN">
             <!-- //split up -->
             
-            <input type="hidden" name="fee_splitup" id="fee_splitup" value="{{ json_encode($feeDetails) }}"><!--
-            //split up end -->
+            <input type="hidden" name="fee_splitup" id="fee_splitup" value="{{ json_encode($feeDetails) }}">
+           
             
             <!-- Billing information -->
 

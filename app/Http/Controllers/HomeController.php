@@ -1952,7 +1952,7 @@ $category=DB::select("select category_sl,category_name from tb_category  ");
 
             $result_1=DB::select("select subcaste,id from tbz_reservation_list where community=? AND religion=? ORDER BY subcaste",[$community,$religion]);
 
-            //dd($result_1);
+            // dd($result_1);
                         $htmlcent = "<class=\"col-sm-4\" id=\"castediv\" name=\"castediv\">
                         <select class=\"form-control form-control-sm select2 col-md-8\"  id= \"pgapp_caste_sl\" name=\"pgapp_caste_sl\" >
                         <option value=\"\" >
@@ -1977,6 +1977,7 @@ public function subcaste(Request $request)
     $religion = $request->input('relgn');
 
     $result_1 = DB::select("select * from tb_subcaste where subc_caste_sl=? and subc_relgn_sl=?",[$caste,$religion]);
+    // dd($result_1);
 
     $htmlcent = "<class=\"col-sm-4\" id=\"subcastediv\" name=\"subcastediv\">
  <select  id= \"pgapp_subcaste_sl\" name=\"pgapp_subcaste_sl \">
@@ -3357,8 +3358,6 @@ if(count($option)==0)
 
     public function pay_details()
     {
-        
-     
        
 //        if(Auth::user()->pg_edit_appl == 1 || $this->payment_status() == 0   ){
 //              return redirect('home');
@@ -3423,6 +3422,8 @@ if(count($option)==0)
 //                (SELECT admn22.intra_cent_allot_change.app_id FROM admn22.intra_cent_allot_change )",[$id]);
          
          $allotstatusres=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.seat_allocation_matrix_not_published
+ where app_id=?",[$id]);
+   $allotstatusres2=DB::select("select *,getcentrename(cent) as centre,getpgm(pgm) as program_name,special_reserv_flag from admn22.tb_seat_allocationmatrix_third_2026
  where app_id=?",[$id]);
          
         //   dd($allotstatusres);
@@ -3544,14 +3545,16 @@ if(count($option)==0)
         //   }
 
         // 1. CCAvenue payment
-$ccavenuePayments = TbzCcavenueTxn::where('client_code', Auth::user()->pgapp_id)
-->where('ucity_service', 'LIKE', "PG-ADMISSION-FEE-2025")
-->where('order_status', "Success")
-->get();
-
+$ccavenuePayments = DB::connection('pgsql2')
+    ->table('tbz_ccavenue_txns')
+    ->where('client_code', Auth::user()->pgapp_id)
+    ->where('ucity_service', 'LIKE', 'PG-ADMISSION-FEE-2026')
+    ->whereIn('order_status', ['Success', 'Shipped', 'Successfully'])
+    ->get();
+    // dd($ccavenuePayments);
 // 2. Atom payment
 $atomPayments = PaymentTrans::where('client_code', Auth::user()->pgapp_id)
-->where('ucity_service', "PG-ADMISSION-FEE-2025")
+->where('ucity_service', "PG-ADMISSION-FEE-2026")
 ->where('res_verified', "SUCCESS")
 ->get();
 
@@ -3581,7 +3584,14 @@ $pubstatus=-1;
           $pubstatus=$value->status;
       }
 
-       
+    $ccavenuefee = DB::connection('pgsql2')
+    ->table('tbz_ccavenue_txns')
+    ->where('client_code', $id)
+    ->where('ucity_service', 'LIKE', 'PG-ADMISSION-FEE-2026')
+    ->whereIn('order_status', ['Success', 'Shipped', 'Successfully'])
+    ->exists();
+
+$status = $ccavenuefee ? 1 : 0;
       $dt_now = Carbon::now();
         
         $trn_date= $dt_now->toDateString();
@@ -3638,7 +3648,7 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
                        // dd($result);
 
 
-            $seatAllocations = DB::table('admn22.seat_allocation_matrix_not_published')
+            $seatAllocations = DB::table('admn22.tb_seat_allocationmatrix_third_2026')
             ->select(
                 'app_allotment',
                 'pgm',
@@ -3668,7 +3678,32 @@ $finalIndexMark = $rankDetails->final_indexmark ?? null;
             
             
         
-        
+    
+    $secondallot = DB::table('tb_pgapp as p')
+    ->where('p.pgapp_id', Auth::user()->pgapp_id)
+    ->where(function ($query) {
+
+        // Third allotment students
+        $query->whereExists(function ($sub) {
+            $sub->select(DB::raw(1))
+                ->from('admn22.tb_seat_allocationmatrix_third_2026 as s')
+                ->whereColumn('s.app_id', 'p.pgapp_id');
+        })
+
+        // Spot allotment students
+        ->orWhereExists(function ($sub) {
+            $sub->select(DB::raw(1))
+                ->from('admn22.seat_allocation_matrix as s')
+                ->whereColumn('s.app_id', 'p.pgapp_id');
+        });
+
+    })
+    ->exists();
+
+$secondallot_status = $secondallot ? 1 : 0;
+
+
+// dd($secondallot_status);
         
         //dd($pgapp_stream_id);
  
@@ -3877,12 +3912,12 @@ $data['Application Fee'] = (float) $amnt;
         
     
             
-            
+        //    dd($allotstatusres2);
      
       return view('pgfinalview', compact('allotstatusres','allotstat',
              'pay_details','adsc_sl',
              'payment_success_count','datenow','admstat','feestat','admstat',
-             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark'))->with('feeDetails', $data);
+             'payment_balnc','publish_status','id','mark','seatAllocations','result','rankl','amnt','finalIndexMark','status','secondallot_status','allotstatusres2'))->with('feeDetails', $data);
       
       
       
@@ -5462,14 +5497,16 @@ if($transactionResponse->validateResponse($_POST)){
     
     
     public function interviewmemo(){
-      
+    //   dd("hyyy");
      $appid=Auth::user()->pgapp_id;  
      $adscl=Auth::user()->pgapp_adsc_sl;  
      $adscname = DB::select('select adsc_name,pgm_name from  tb_admnscheme 
           inner join tb_program on pgm_sl=adsc_pgm_sl where adsc_sl=? ' , [$adscl]);
+   
 
      foreach($adscname as $key){
          $pgmname=$key->pgm_name;
+         $courseName=$key->adsc_name;
      }
      $fee =[];
 //     $allotment = DB::select('select *,getcentrename(centid) as allot_cent,getpgm(pgmid) as pgm FROM tb_pgallotmentdate INNER JOIN
@@ -5480,17 +5517,38 @@ if($transactionResponse->validateResponse($_POST)){
 //         admn22.seat_allocation_matrix ON tb_pgallotmentdate.sh_adscsl = admn22.seat_allocation_matrix.pgm
 //            where admn22.seat_allocation_matrix.app_id=?',[$appid]);
      
-     $allotment = DB::select('
-    SELECT *, 
-           getcentrename(cent) AS allot_cent, 
-           getpgm(pgm) AS pgm, 
-           UPPER(seat) AS seat, 
-           UPPER(weightage) AS weightage 
-    FROM admn22.seat_allocation_matrix 
-    WHERE app_id = ?
-', [$appid]);
+ $allotment = DB::select('
+        SELECT *,
+               getcentrename(cent) AS allot_cent,
+               getpgm(pgm) AS pgm,
+               UPPER(seat) AS seat,
+               UPPER(weightage) AS weightage
+        FROM admn22.seat_allocation_matrix
+        WHERE app_id = ?
+    ', [$appid]);
 
 // dd($allotment);
+// If not found in second allotment, check first allotment
+if (empty($allotment)) {
+   $allotment = DB::select('
+    SELECT *,
+           getcentrename(cent) AS allot_cent,
+           getpgm(pgm) AS pgm,
+           UPPER(seat) AS seat,
+           UPPER(weightage) AS weightage
+    FROM admn22.tb_seat_allocationmatrix_third_2026
+    WHERE app_id = ?
+', [$appid]);
+}
+$rank = DB::table('tbz_pgranklist')
+    ->select('rank', 'spot_rank')
+    ->where('rank_appid', $appid)   // your condition
+    ->first();
+
+    $rankValue = $rank->spot_rank ?? $rank->rank;
+
+// dd($allotment);
+// dd($rank);
       $dt_now = Carbon::now();
             $curnt_dat= $dt_now->toDateString();
             $curnt_date= date("d-m-Y", strtotime($curnt_dat) );
@@ -5499,13 +5557,12 @@ if($transactionResponse->validateResponse($_POST)){
 //      if($adscl==1041 || $adscl==1054 || $adscl==1063 || $adscl==1064)   {
 //         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1054]); 
 //      } 
-       if($adscl==1126 || $adscl==1127 || $adscl==1124 || $adscl==1125)   {
-         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1126]); 
-      }
-      
-      if($adscl==1085)   {
-         $fee = DB::select('select fee_title,fee_gen from asw_admfee_list where fee_adsc_sl=? ' , [1085]); 
-      } 
+      $fee = DB::select(
+    'select fee_title, fee_gen ,fee_scstoec
+     from asw_admfee_list 
+     where fee_adsc_sl = ?',
+    [$adscl]
+);
             // dd($fee);
     if(empty($allotment)){
         return "If any memo download problem, please contact SSUS IT Section.";  
@@ -5514,7 +5571,7 @@ if($transactionResponse->validateResponse($_POST)){
 
 //        dd($fee);
 //        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl'));
-        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl','fee'));
+        $pdf = PDF::loadView('2022.interviewmemo',compact('allotment','curnt_date','timenow','pgmname','adscl','fee','courseName','rankValue'));
 
         return $pdf->download('InterviewMemo.pdf');
      
