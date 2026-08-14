@@ -136,11 +136,11 @@ For any such issue please write to us at helpdesk@ssus.ac.in</p>
 </table>
 
 <!-- Retry Button -->
-<!-- <div class="text-center mt-3">
+ <div class="text-center mt-3">
 <button type="submit" id="retryBtn" class="btn btn-primary">
 Retry Payment
 </button>
-</div> -->
+</div> 
 
 </form>
 
@@ -213,7 +213,7 @@ Download <i class="fa fa-download"></i></a>
 </tr> 
 @endif
 
-@if($allotstat == 1)
+<!-- @if($allotstat == 1 && $secondallot_status!='1' )
 
 @if(Auth::user()->pgapp_adsc_sl != '1182')
 <tr>
@@ -258,12 +258,64 @@ Download <i class="fa fa-download"></i></a>
 </div>
 </td>
 </tr>
+@endif -->
+
+
+
+<!-- @endif -->
+
+@if($secondallot_status == '1')
+
+
+@if(!in_array(Auth::user()->pgapp_adsc_sl, [1202]))
+<tr>
+<th scope="row">Third Allotment Status</th>
+<td>
+<div class="col-sm-12">
+<div style="padding:10px; background-color:#f8f9fa; border:1px solid #dee2e6; border-radius:5px;">
+
+@if(isset($allotstatusres2[0]) && !empty($allotstatusres2[0]->program_name))
+<div style="
+    padding:8px 12px;
+    margin-bottom:12px;
+    border-left:4px solid #28a745;
+    background:rgba(40,167,69,0.08);
+    color:#155724;
+    border-radius:4px;
+    font-size:14px;
+">
+    🎉 <strong>Congratulations!</strong> You are included in the Third Allotment.
+</div>
+@foreach($allotstatusres2 as $allot)
+<p><strong>Program:</strong> {{ $allot->program_name }}</p>
+<p><strong>Centre:</strong> {{ $allot->centre }}</p>
+<p><strong>Community:</strong> {{ $allot->app_cat }}</p>
+<p><strong>Allotted Category:</strong> {{ $allot->seat }}</p>
+<p><strong>Allotment Type:</strong> {{ $allot->app_allotment }}</p>
+
+@if(!$loop->last)
+<hr>
+@endif
+@endforeach
+
+@else
+
+<div class="alert alert-warning mb-0">
+<strong>You are not included in the Rank List.</strong>
+</div>
+
 @endif
 
-@elseif($allotstat == 0)
+</div>
+</div>
+</td>
+</tr>
+@endif
+
+@elseif($secondallot_status!= 0 && $secondallot_status!= 1)
 
 <tr>
-<th scope="row">First Allotment Status</th>
+<th scope="row">Second Allotment Status</th>
 <td>
 <div style="
 padding: 15px 20px;
@@ -278,6 +330,8 @@ You have not been allotted a seat in this round. Please wait for the upcoming al
 </tr>
 
 @endif
+
+
 
 <!-- 
 <tr>
@@ -351,11 +405,11 @@ font-weight:500;
 <div class="container mt-4" >
 
 <!-- Button to toggle table visibility -->
-<button class="btn btn-info mb-3" id="toggleTableBtn"> First Allotment - Last Rank Details (For Reference)</button>
+<button class="btn btn-info mb-3" id="toggleTableBtn"> Third Allotment - Last Rank Details (For Reference)</button>
 
 <div id="tableContainer" style="display: none;">
 <!--<h4 class="mb-4">Provisional Allotment Summary (for reference): Last rank of students allotted seats, listed by program, centre, and reservation category.</h4>-->
-<h4 class="mb-4">First Allotment: Last rank details</h4>
+<h4 class="mb-4">Third Allotment: Last rank details</h4>
 <table class="table table-bordered table-striped">
 <thead>
 <tr>
@@ -507,8 +561,8 @@ this.textContent = buttonText;
 </div> 
 </div>
 </div>
+@if(!in_array(Auth::user()->pgapp_adsc_sl, [1202,]))
 @if(Auth::user()->ranklist_stat==1 || Auth::user()->ranklist_stat==0)
-@if($allotstat==1)
 
 <div class="container mt-4 mb-4">
 
@@ -520,6 +574,8 @@ this.textContent = buttonText;
         border-radius:4px;">
 
         <div class="row align-items-center">
+
+@if($secondallot_status == 1 )
 
             <div class="col-md-9 text-left">
 
@@ -556,6 +612,7 @@ this.textContent = buttonText;
         </div>
 
     </div>
+@endif
 
 
 
@@ -979,7 +1036,7 @@ For any issues related to online payment please write to us, helpdesk@ssus.ac.in
     <div style="font-size:30px;margin-right:12px;">⚠️</div>
     <div>
         <h4 style="margin:0;color:#d46b08;font-weight:700;">
-            First Allotment Notice
+            Third Allotment Notice
         </h4>
         <small style="color:#666;">
             Please read the following information carefully.
@@ -990,10 +1047,10 @@ For any issues related to online payment please write to us, helpdesk@ssus.ac.in
 <div style="background:#ffffff;border-radius:8px;padding:15px;border:1px solid #f0f0f0;">
 
     <p style="line-height:1.8;color:#333;margin-bottom:15px;">
-        <strong style="color:#cf1322;">ഒന്നാം അലോട്ട്മെന്റുമായി ബന്ധപ്പെട്ട പ്രധാന നിർദ്ദേശം:</strong><br>
-        ഒന്നാം അലോട്ട്മെന്റിൽ ഒരു ക്യാമ്പസിൽ പ്രവേശനം ലഭിച്ച അപേക്ഷകർ തുടർ അലോട്ട്മെന്റുകളിൽ ഉയർന്ന ഓപ്ഷനുകൾ (Higher Options) പരിഗണിക്കപ്പെടാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, അനുവദിക്കപ്പെട്ട ക്യാമ്പസിൽ നിശ്ചിത സമയപരിധിക്കുള്ളിൽ പ്രവേശനം നേടേണ്ടതാണ്.
+        <strong style="color:#cf1322;"><strong>മൂന്നാം അലോട്ട്മെന്റുമായി ബന്ധപ്പെട്ട പ്രധാന നിർദ്ദേശം:</strong><br>
+മൂന്നാം അലോട്ട്മെന്റിൽ ഒരു ക്യാമ്പസിൽ പ്രവേശനം ലഭിച്ച അപേക്ഷകർ തുടർ അലോട്ട്മെന്റുകളിൽ ഉയർന്ന ഓപ്ഷനുകൾ (Higher Options) പരിഗണിക്കപ്പെടാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, അനുവദിക്കപ്പെട്ട ക്യാമ്പസിൽ നിശ്ചിത സമയപരിധിക്കുള്ളിൽ പ്രവേശനം നേടേണ്ടതാണ്.
 
-        പ്രവേശനം നേടാത്ത അപേക്ഷകരെ ഉയർന്ന ഓപ്ഷൻ പരിഗണനയ്ക്കോ തുടർ അലോട്ട്മെന്റുകളിലേക്കോ അർഹരായി പരിഗണിക്കുകയില്ല.
+പ്രവേശനം നേടാത്ത അപേക്ഷകരെ ഉയർന്ന ഓപ്ഷൻ പരിഗണനയ്ക്കോ തുടർ അലോട്ട്മെന്റുകളിലേക്കോ അർഹരായി പരിഗണിക്കുകയില്ല.
 
         
     </p>
@@ -1001,10 +1058,10 @@ For any issues related to online payment please write to us, helpdesk@ssus.ac.in
     <hr style="border:0;border-top:1px solid #e8e8e8;margin:15px 0;">
 
     <p style="line-height:1.8;color:#333;margin-bottom:0;">
-        <strong style="color:#cf1322;">Important Instruction Regarding First Allotment:</strong><br>
-        Candidates who have been allotted admission in a campus through the First Allotment and wish to be considered for Higher Options in subsequent allotments must secure admission in the allotted campus within the prescribed time limit.
+        <strong style="color:#cf1322;">Important Instruction Regarding Third Allotment:</strong><br>
+        Candidates who have been allotted admission in a campus through the Third Allotment and wish to be considered for Higher Options in subsequent allotments must secure admission in the allotted campus within the prescribed time limit.
 
-        Candidates who fail to take admission in the campus allotted through the First Allotment will not be eligible for consideration under Higher Options or for participation in subsequent allotments.
+        Candidates who fail to take admission in the campus allotted through the Third Allotment will not be eligible for consideration under Higher Options or for participation in subsequent allotments.
 
         Therefore, candidates are advised to confirm their admission in the allotted campus within the stipulated time to retain eligibility for further allotment processes.
     </p>

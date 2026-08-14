@@ -97,27 +97,43 @@
                  <div class="col-sm-12">
                      <div class="card-body table-responsive" >
                        <table border="1" class="table table-striped">
-                        <tr>
-                            <th>Name of the Programme</th>
-                            <th>Rank</th>
-                            <th>Admission Schedule</th>
-                            
-                        </tr>
+                       <tr>
+        <th width="40%">Name of the Programme</th>
+        <th width="10%">Rank</th>
+        <th width="50%">Admission Schedule</th>
+    </tr>
                      
                         <tr>
                             <td style="text-align: center;">{{$key->pgm}}</td>
-                            <td style="text-align: center;">{{$key->app_rank }} </td>
+                            <td style="text-align: center;">{{$rankValue}} </td>
                             @if($key->app_allotment == 'First')
                              <td style="text-align: center;">22-06-2026 to 23-06-2026, between 10.30 AM to 3.30 PM</td>
                              <!--<td style="text-align: center;">{{$key->memodate}}, between {{$key->memotime}}  </td>-->
-                             @elseif($key->app_allotment == 'SECOND')
-                             <td style="text-align: center;">{{$key->memodate}}, between {{$key->memotime}}  </td>
+                             @elseif($key->app_allotment == 'Second')
+                                                      <td style="text-align:center; white-space: normal; word-wrap: break-word;">
+                                               01-07-2026 to 03-07-2026,<br>
+                                  between 10:30 AM to 03:30 PM
+                                      </td>
+                                       @elseif($key->app_allotment == 'Third')
+                                                   @if($adscl == 1182)
+        <td style="text-align:center; white-space: normal; word-wrap: break-word;">
+            13-07-2026 to 15-07-2026,<br>
+            between 10:30 AM to 03:30 PM
+        </td>
+    @else
+        <td style="text-align:center; white-space: normal; word-wrap: break-word;">
+            08-07-2026 to 09-07-2026,<br>
+            between 10:30 AM to 03:30 PM
+        </td>
+    @endif
+        
                              @elseif($key->app_allotment == 'THIRD')
                              @if($key->app_id == 'ADMPG2501616' || $key->app_id == 'ADMPG2503304' || $key->app_id == 'ADMPG2500016' || $key->app_id == 'ADMPG2501283'
                              || $key->app_id == 'ADMPG2502987' || $key->app_id == 'ADMPG2503567' || $key->app_id == 'ADMPG2500932' || $key->app_id == 'ADMPG2502304')
-                              <td style="text-align: center;">
-                                  16-06-2026 to 17-06-2026, between 10:30 AM to 03:30 PM
-                              </td>
+                             <td style="text-align:center; white-space: normal; word-wrap: break-word;">
+    01-07-2026 to 03-07-2026,<br>
+    between 10:30 AM to 03:30 PM
+</td>
                              @else
                              <td style="text-align: center;">{{$key->memodate}}, between {{$key->memotime}}  </td>
                              @endif
